@@ -27,9 +27,6 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: Export
-        run: yarn export
-
       # Step 4 starts here !!!
       - name: Deploy
         run: yarn cdk deploy --require-approval=never
