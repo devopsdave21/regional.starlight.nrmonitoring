@@ -30,7 +30,7 @@ jobs:
           npm install -g aws-cdk
 
       - name: Synth CDK
-        run: cdk synth
+        run: cdk synth --app
 
       - name: CDK Deploy
         run: |
