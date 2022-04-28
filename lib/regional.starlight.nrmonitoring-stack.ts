@@ -13,8 +13,8 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
     // Create lambdas
-    const test = new NodejsFunction(this, "test test", {
-      functionName: "test1",
+    const testFunc = new NodejsFunction(this, "test test", {
+      functionName: "test",
       runtime: Runtime.NODEJS_14_X,
       entry: "functions/test.js",
       logRetention: RetentionDays.ONE_WEEK,
@@ -24,7 +24,7 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
 
     // Create the workflow
     const getTest = new tasks.LambdaInvoke(this, "Test", {
-      lambdaFunction: test,
+      lambdaFunction: testFunc,
       outputPath: "$.Payload",
     });
 
