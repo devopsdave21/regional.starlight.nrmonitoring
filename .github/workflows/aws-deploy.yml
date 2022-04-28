@@ -2,7 +2,7 @@ on: [push, workflow_dispatch]
 
 jobs:
   aws_cdk:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
