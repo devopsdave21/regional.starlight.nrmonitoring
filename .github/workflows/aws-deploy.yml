@@ -31,5 +31,5 @@ jobs:
 
       - name: CDK Deploy
         run: |
-          cdk deploy --require-approval never "*"
+          cdk deploy --app "npx ts-node --prefer-ts-exts bin/regional.starlight.nrmonitoring.ts" --require-approval never "*"
 
