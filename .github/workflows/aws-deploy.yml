@@ -13,7 +13,7 @@ jobs:
         uses: action/cache@v2
         with:
           path: ~/.npm
-          key: ${{ runner.OS }}-node-${{ hasFiles('**/package-lock.json') }}
+          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.OS }}-node-
             ${{ runner.OS }}-
