@@ -30,7 +30,7 @@ jobs:
           npm install -g aws-cdk
 
       - name: Synth CDK
-        run: cdk synth --app
+        run: cdk synth --app "npx ts-node --prefer-ts-exts bin/regional.starlight.nrmonitoring"
 
       - name: CDK Deploy
         run: |
