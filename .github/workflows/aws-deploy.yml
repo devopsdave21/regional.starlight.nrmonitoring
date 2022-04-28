@@ -16,8 +16,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY }}
           aws-region: 'eu-west-1'
       - name: Install dependencies
-        run: yarn
+        run: npm i
       - name: Synth stack
-        run: yarn cdk synth
+        run: cdk synth
       - name: Deploy stack
-        run: yarn cdk deploy --all --require-approval never
+        run: cdk deploy --all --require-approval never
