@@ -64,32 +64,37 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       })
     );
 
-    apigateway.root.addMethod(
-      "POST",
-      new apig.AwsIntegration({
-        service: "states",
-        action: "StartExecution",
-        integrationHttpMethod: "POST",
-        options: {
-          credentialsRole,
-          integrationResponses: [
-            {
-              statusCode: "200",
-              responseTemplates: {
-                "application/json": `{"complete": true}`,
-              },
-            },
-          ],
-          requestTemplates: {
-            "application/json": `{
-              "stateMachineArn": "arn:aws:states:eu-west-1:189221230217:stateMachine:AutomatedmonitoringNewRelic5C4D2407-LKzcAgwFk94y"
-            }`,
-          },
-        },
-      }),
-      {
-        methodResponses: [{ statusCode: "200" }],
-      }
-    );
+    new apig.StepFunctionsRestApi(this, 'SfnRestApi', {
+      deploy: true,
+      stateMachine: stateMachine,
+    })
+
+    // apigateway.root.addMethod(
+    //   "POST",
+    //   new apig.AwsIntegration({
+    //     service: "states",
+    //     action: "StartExecution",
+    //     integrationHttpMethod: "POST",
+    //     options: {
+    //       credentialsRole,
+    //       integrationResponses: [
+    //         {
+    //           statusCode: "200",
+    //           responseTemplates: {
+    //             "application/json": `{"complete": true}`,
+    //           },
+    //         },
+    //       ],
+    //       requestTemplates: {
+    //         "application/json": `{
+    //           "stateMachineArn": "arn:aws:states:eu-west-1:189221230217:stateMachine:AutomatedmonitoringNewRelic5C4D2407-LKzcAgwFk94y"
+    //         }`,
+    //       },
+    //     },
+    //   }),
+    //   {
+    //     methodResponses: [{ statusCode: "200" }],
+    //   }
+    // );
   }
 }
