@@ -12,72 +12,72 @@ import * as tasks from "aws-cdk-lib/aws-stepfunctions-tasks";
 export class RegionalStarlightNrmonitoringStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
+
     // Create lambdas
-    // const testFunc = new NodejsFunction(this, "test test", {
-    //   functionName: "test",
-    //   runtime: Runtime.NODEJS_14_X,
-    //   entry: "functions/test.js",
-    //   logRetention: RetentionDays.ONE_WEEK,
-    //   architecture: Architecture.ARM_64,
-    //   memorySize: 1024,
-    // });
+    const testFunc = new NodejsFunction(this, "test test", {
+      functionName: "test",
+      entry: "functions/test.js",
+      runtime: Runtime.NODEJS_14_X,
+      logRetention: RetentionDays.ONE_WEEK,
+      memorySize: 1024,
+    });
 
     // Create the workflow
-    // const getTest = new tasks.LambdaInvoke(this, "Test", {
-    //   lambdaFunction: testFunc,
-    //   outputPath: "$.Payload",
-    // });
+    const getTest = new tasks.LambdaInvoke(this, "Test", {
+      lambdaFunction: testFunc,
+      outputPath: "$.Payload",
+    });
 
     const wait = new sfn.Wait(this, "Wait", {
       time: sfn.WaitTime.duration(Duration.seconds(3)),
     });
 
-    //const definition = getTest.next(wait);
+    const definition = getTest.next(wait);
 
-    // const stateMachine = new sfn.StateMachine(
-    //   this,
-    //   "Automated-monitoring-New-Relic",
-    //   {
-    //     definition,
-    //     timeout: Duration.minutes(3),
-    //   }
-    // )
+    const stateMachine = new sfn.StateMachine(
+      this,
+      "Automated-monitoring-New-Relic",
+      {
+        definition,
+        timeout: Duration.minutes(3),
+      }
+    )
 
-    //const sfnArn = stateMachine.stateMachineArn;
+    const sfnArn = stateMachine.stateMachineArn;
 
     // Create the API
-    //const apigateway = new apig.RestApi(this, "endpoint");
+    const apigateway = new apig.RestApi(this, "endpoint");
 
-    // const credentialsRole = new iam.Role(this, "getRole", {
-    //   assumedBy: new iam.ServicePrincipal("apigateway.amazonaws.com"),
-    // });
+    const credentialsRole = new iam.Role(this, "getRole", {
+      assumedBy: new iam.ServicePrincipal("apigateway.amazonaws.com"),
+    });
 
-    // apigateway.root.addMethod(
-    //   "POST",
-    //   new apig.AwsIntegration({
-    //     service: "states",
-    //     action: "StartExecution",
-    //     integrationHttpMethod: "POST",
-    //     options: {
-    //       credentialsRole,
-    //       integrationResponses: [
-    //         {
-    //           statusCode: "200",
-    //           responseTemplates: {
-    //             "application/json": `{"complete": true}`,
-    //           },
-    //         },
-    //       ],
-    //       requestTemplates: {
-    //         "application/json": `{
-    //           "stateMachineArn": ${sfnArn}
-    //         }`
-    //       },
-    //     },
-    //   }),
-    //   {
-    //     methodResponses: [{ statusCode: "200" }],
-    //   }
-    // );
+    apigateway.root.addMethod(
+      "POST",
+      new apig.AwsIntegration({
+        service: "states",
+        action: "StartExecution",
+        integrationHttpMethod: "POST",
+        options: {
+          credentialsRole,
+          integrationResponses: [
+            {
+              statusCode: "200",
+              responseTemplates: {
+                "application/json": `{"complete": true}`,
+              },
+            },
+          ],
+          requestTemplates: {
+            "application/json": `{
+              "stateMachineArn": ${sfnArn}
+            }`
+          },
+        },
+      }),
+      {
+        methodResponses: [{ statusCode: "200" }],
+      }
+    );
   }
 }
