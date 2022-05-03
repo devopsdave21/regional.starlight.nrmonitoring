@@ -23,7 +23,7 @@ jobs:
       - name: Install
         run: npm i
 
-      # Step 3 starts here !!!
+      # Step 3 starts here !
       - name: Build
         run: yarn build
 
