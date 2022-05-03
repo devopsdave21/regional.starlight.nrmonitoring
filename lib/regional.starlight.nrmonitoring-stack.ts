@@ -34,11 +34,13 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
 
     const definition = getTest.next(wait);
 
+    const stateMachineDef = new sfn.Pass(this, 'PassState');
+
     const stateMachine = new sfn.StateMachine(
       this,
       "Automated-monitoring-New-Relic",
       {
-        definition,
+        definition: stateMachineDef,
         stateMachineType: sfn.StateMachineType.EXPRESS,
         timeout: Duration.minutes(3),
       }
