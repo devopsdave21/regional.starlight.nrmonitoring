@@ -41,7 +41,7 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
         definition,
         timeout: Duration.minutes(3),
       }
-    )
+    );
 
     const sfnArn = stateMachine.stateMachineArn;
 
@@ -51,6 +51,18 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
     const credentialsRole = new iam.Role(this, "getRole", {
       assumedBy: new iam.ServicePrincipal("apigateway.amazonaws.com"),
     });
+
+    credentialsRole.attachInlinePolicy(
+      new iam.Policy(this, "getPolicy", {
+        statements: [
+          new iam.PolicyStatement({
+            actions: ["states:StartExecution"],
+            effect: iam.Effect.ALLOW,
+            resources: [`${sfnArn}`],
+          }),
+        ],
+      })
+    );
 
     apigateway.root.addMethod(
       "POST",
@@ -71,7 +83,7 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
           requestTemplates: {
             "application/json": `{
               "stateMachineArn": ${sfnArn}
-            }`
+            }`,
           },
         },
       }),
