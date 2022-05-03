@@ -47,7 +47,7 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
     const sfnArn = stateMachine.stateMachineArn;
 
     // Create the API
-    const apigateway = new apig.RestApi(this, "endpoint");
+    //const apigateway = new apig.RestApi(this, "endpoint");
 
     const credentialsRole = new iam.Role(this, "getRole", {
       assumedBy: new iam.ServicePrincipal("apigateway.amazonaws.com"),
