@@ -39,6 +39,7 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       "Automated-monitoring-New-Relic",
       {
         definition,
+        stateMachineType: sfn.StateMachineType.EXPRESS,
         timeout: Duration.minutes(3),
       }
     );
