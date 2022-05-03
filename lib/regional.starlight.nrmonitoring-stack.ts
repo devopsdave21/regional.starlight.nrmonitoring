@@ -70,7 +70,6 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
         service: "states",
         action: "StartExecution",
         integrationHttpMethod: "POST",
-        path: '/execution',
         options: {
           credentialsRole,
           integrationResponses: [
