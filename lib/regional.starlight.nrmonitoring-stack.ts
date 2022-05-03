@@ -34,14 +34,11 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
 
     const definition = getTest.next(wait);
 
-    const stateMachineDef = new sfn.Pass(this, 'PassState');
-
     const stateMachine = new sfn.StateMachine(
       this,
       "Automated-monitoring-New-Relic",
       {
-        definition: stateMachineDef,
-        stateMachineType: sfn.StateMachineType.EXPRESS,
+        definition,
         timeout: Duration.minutes(3),
       }
     );
@@ -49,7 +46,7 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
     const sfnArn = stateMachine.stateMachineArn;
 
     // Create the API
-    //const apigateway = new apig.RestApi(this, "endpoint");
+    const apigateway = new apig.RestApi(this, "endpoint");
 
     const credentialsRole = new iam.Role(this, "getRole", {
       assumedBy: new iam.ServicePrincipal("apigateway.amazonaws.com"),
@@ -67,37 +64,32 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       })
     );
 
-    new apig.StepFunctionsRestApi(this, 'SfnRestApi', {
-      deploy: true,
-      stateMachine: stateMachine,
-    })
-
-    // apigateway.root.addMethod(
-    //   "POST",
-    //   new apig.AwsIntegration({
-    //     service: "states",
-    //     action: "StartExecution",
-    //     integrationHttpMethod: "POST",
-    //     options: {
-    //       credentialsRole,
-    //       integrationResponses: [
-    //         {
-    //           statusCode: "200",
-    //           responseTemplates: {
-    //             "application/json": `{"complete": true}`,
-    //           },
-    //         },
-    //       ],
-    //       requestTemplates: {
-    //         "application/json": `{
-    //           "stateMachineArn": "arn:aws:states:eu-west-1:189221230217:stateMachine:AutomatedmonitoringNewRelic5C4D2407-LKzcAgwFk94y"
-    //         }`,
-    //       },
-    //     },
-    //   }),
-    //   {
-    //     methodResponses: [{ statusCode: "200" }],
-    //   }
-    // );
+    apigateway.root.addMethod(
+      "POST",
+      new apig.AwsIntegration({
+        service: "states",
+        action: "StartExecution",
+        integrationHttpMethod: "POST",
+        options: {
+          credentialsRole,
+          integrationResponses: [
+            {
+              statusCode: "200",
+              responseTemplates: {
+                "application/json": `{"complete": true}`,
+              },
+            },
+          ],
+          requestTemplates: {
+            "application/json": `{
+              "stateMachineArn": "arn:aws:states:eu-west-1:189221230217:stateMachine:AutomatedmonitoringNewRelic5C4D2407-LKzcAgwFk94y"
+            }`,
+          },
+        },
+      }),
+      {
+        methodResponses: [{ statusCode: "200" }],
+      }
+    );
   }
 }
