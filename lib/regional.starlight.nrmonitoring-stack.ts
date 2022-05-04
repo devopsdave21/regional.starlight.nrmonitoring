@@ -14,17 +14,17 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
     super(scope, id, props);
 
     // Create lambdas
-    const testFunc = new NodejsFunction(this, "test test", {
-      functionName: "test",
-      entry: "functions/test.js",
+    const initNewRelicMonitoring = new NodejsFunction(this, "Automated New Relic Monitoring", {
+      functionName: "initAutomatedNewRelicMonitoring",
+      entry: "functions/initNewRelicMonitoring.js",
       runtime: Runtime.NODEJS_14_X,
       logRetention: RetentionDays.ONE_WEEK,
       memorySize: 1024,
     });
 
     // Create the workflow
-    const getTest = new tasks.LambdaInvoke(this, "Test", {
-      lambdaFunction: testFunc,
+    const initNewRelicMonitoringTask = new tasks.LambdaInvoke(this, "Test", {
+      lambdaFunction: initNewRelicMonitoring,
       outputPath: "$.Payload",
     });
 
@@ -32,7 +32,7 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       time: sfn.WaitTime.duration(Duration.seconds(3)),
     });
 
-    const definition = getTest.next(wait);
+    const definition = initNewRelicMonitoringTask.next(wait);
 
     const stateMachine = new sfn.StateMachine(
       this,
