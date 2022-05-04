@@ -9,6 +9,9 @@ exports.handler = async (event) => {
     var PAGERDUTY_KEY = event.pagerdutyApiKey;
     var RESULT = {};
 
+    // Need to validate this at the API level using models and schemas etc.
+    // Should not get through to lambda for validation as that costs money
+
     if (API_KEY && NR_ACCOUNT_ID && TEAM_NAME && PAGERDUTY_KEY) {
         console.log('All params present and accounted for');
         RESULT = {

@@ -23,7 +23,7 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
     });
 
     // Create the workflow
-    const initNewRelicMonitoringTask = new tasks.LambdaInvoke(this, "Test", {
+    const initNewRelicMonitoringTask = new tasks.LambdaInvoke(this, "initNRParamChecker", {
       lambdaFunction: initNewRelicMonitoring,
       outputPath: "$.Payload",
     });
