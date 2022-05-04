@@ -59,7 +59,7 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
             actions: ["states:StartExecution"],
             effect: iam.Effect.ALLOW,
             resources: [
-              "arn:aws:states:eu-west-1:189221230217:stateMachine:AutomatedmonitoringNewRelic5C4D2407-Zr4Xj7odBnly",
+              `${sfnArn}`,
             ],
           }),
         ],
@@ -84,7 +84,7 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
           ],
           requestTemplates: {
             "application/json": `{
-              "stateMachineArn": "arn:aws:states:eu-west-1:189221230217:stateMachine:AutomatedmonitoringNewRelic5C4D2407-Zr4Xj7odBnly"
+              "stateMachineArn": ${sfnArn}
             }`,
           },
         },
