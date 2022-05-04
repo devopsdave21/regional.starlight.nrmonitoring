@@ -85,7 +85,7 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
           ],
           requestTemplates: {
             "application/json": `{
-              "arn:aws:states:eu-west-1:189221230217:stateMachine:AutomatedmonitoringNewRelic5C4D2407-Zr4Xj7odBnly"
+              "stateMachineArn": "arn:aws:states:eu-west-1:189221230217:stateMachine:AutomatedmonitoringNewRelic5C4D2407-Zr4Xj7odBnly"
             }`,
           },
         },
