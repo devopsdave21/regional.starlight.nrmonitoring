@@ -7,6 +7,7 @@ import * as apig from "aws-cdk-lib/aws-apigateway";
 import * as iam from "aws-cdk-lib/aws-iam";
 import * as sfn from "aws-cdk-lib/aws-stepfunctions";
 import * as tasks from "aws-cdk-lib/aws-stepfunctions-tasks";
+import { JsonSchemaType, JsonSchemaVersion } from "aws-cdk-lib/aws-apigateway";
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
 
 export class RegionalStarlightNrmonitoringStack extends Stack {
@@ -58,7 +59,9 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
           new iam.PolicyStatement({
             actions: ["states:StartExecution"],
             effect: iam.Effect.ALLOW,
-            resources: ["arn:aws:states:eu-west-1:189221230217:stateMachine:AutomatedmonitoringNewRelic5C4D2407-LKzcAgwFk94y"],
+            resources: [
+              "arn:aws:states:eu-west-1:189221230217:stateMachine:AutomatedmonitoringNewRelic5C4D2407-Zr4Xj7odBnly",
+            ],
           }),
         ],
       })
@@ -82,7 +85,7 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
           ],
           requestTemplates: {
             "application/json": `{
-              "stateMachineArn": "arn:aws:states:eu-west-1:189221230217:stateMachine:AutomatedmonitoringNewRelic5C4D2407-LKzcAgwFk94y"
+              "arn:aws:states:eu-west-1:189221230217:stateMachine:AutomatedmonitoringNewRelic5C4D2407-Zr4Xj7odBnly"
             }`,
           },
         },
