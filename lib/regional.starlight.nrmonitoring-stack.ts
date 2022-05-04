@@ -7,7 +7,6 @@ import * as apig from "aws-cdk-lib/aws-apigateway";
 import * as iam from "aws-cdk-lib/aws-iam";
 import * as sfn from "aws-cdk-lib/aws-stepfunctions";
 import * as tasks from "aws-cdk-lib/aws-stepfunctions-tasks";
-import { JsonSchemaType, JsonSchemaVersion } from "aws-cdk-lib/aws-apigateway";
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
 
 export class RegionalStarlightNrmonitoringStack extends Stack {
