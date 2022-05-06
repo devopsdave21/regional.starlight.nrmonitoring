@@ -86,7 +86,7 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
         new sfn.Choice(this, "Params present?")
           .when(sfn.Condition.stringEquals("$.status", "FAILED"), jobFailed)
       )
-      .next(alertPoliciesTask);
+      
 
     const stateMachine = new sfn.StateMachine(
       this,
