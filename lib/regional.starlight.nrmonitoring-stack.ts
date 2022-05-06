@@ -67,7 +67,9 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
           new iam.PolicyStatement({
             actions: ["states:StartExecution"],
             effect: iam.Effect.ALLOW,
-            resources: ["arn:aws:states:eu-west-1:189221230217:stateMachine:AutomatedmonitoringNewRelic5C4D2407-Zr4Xj7odBnly"],
+            resources: [
+              "arn:aws:states:eu-west-1:189221230217:stateMachine:AutomatedmonitoringNewRelic5C4D2407-Zr4Xj7odBnly",
+            ],
           }),
         ],
       })
@@ -100,8 +102,8 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
           pagerdutyApiKey: {
             type: JsonSchemaType.STRING,
             minLength: 1,
-            maxLength: 100
-          }
+            maxLength: 100,
+          },
         },
       },
     });
@@ -123,9 +125,18 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
             },
           ],
           requestTemplates: {
-            "application/json": `{
-              "stateMachineArn": "arn:aws:states:eu-west-1:189221230217:stateMachine:AutomatedmonitoringNewRelic5C4D2407-Zr4Xj7odBnly"
+            "application/json": `
+            #set($body= $input.json('$'))
+            #set($inputRoot='{ "data" :'+$body+',"apiInfo":{"httpMethod" :"'+ $context.httpMethod+'", "apiKey":"'+ $context.identity.apiKey+'"}}')
+            #set($apiData=$util.escapeJavaScript($inputRoot))
+            #set($apiData=$apiData.replaceAll("\\'","'"))
+            {
+              "input" :"$apiData",
+              "stateMachineArn": "arn:aws:states:eu-west-1:189221230217:stateMachine:AutomatedmonitoringNewRelic5C4D2407-Zr4Xj7odBnly"  
             }`,
+            // {
+            //   "stateMachineArn": "arn:aws:states:eu-west-1:189221230217:stateMachine:AutomatedmonitoringNewRelic5C4D2407-Zr4Xj7odBnly"
+            // }`,
           },
         },
       }),
