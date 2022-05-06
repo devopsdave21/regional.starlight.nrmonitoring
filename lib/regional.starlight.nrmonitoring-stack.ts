@@ -27,6 +27,22 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       }
     );
 
+    const paramsPresent = new NodejsFunction(this, "Check status of params", {
+      functionName: "paramStatusCheck",
+      entry: "functions/paramsStatusCheck.js",
+      runtime: Runtime.NODEJS_14_X,
+      logRetention: RetentionDays.ONE_WEEK,
+      memorySize: 1024
+    });
+
+    const createAlertPolicies = new NodejsFunction(this, "Create NR Alert Policies", {
+      functionName: "createNewRelicAlertPolicies",
+      entry: "functions/createNRAlertPolicies.js",
+      runtime: Runtime.NODEJS_14_X,
+      logRetention: RetentionDays.ONE_WEEK,
+      memorySize: 1024,
+    })
+
     // Create the workflow
     const initNewRelicMonitoringTask = new tasks.LambdaInvoke(
       this,
@@ -37,11 +53,30 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       }
     );
 
+    const alertPoliciesTask = new tasks.LambdaInvoke(this, "createAlertPolicies", {
+      lambdaFunction: createAlertPolicies,
+      outputPath: "$.Payload"
+    })
+
+    const finalStatus = new tasks.LambdaInvoke(this, "Params present", {
+      lambdaFunction: paramsPresent,
+      outputPath: "$.Payload"
+    })
+
     const wait = new sfn.Wait(this, "Wait", {
       time: sfn.WaitTime.duration(Duration.seconds(3)),
     });
 
-    const definition = initNewRelicMonitoringTask.next(wait);
+    const jobFailed = new sfn.Fail(this, "Job Failed", {
+      cause: "AWS Batch job failed",
+      error: "initNewRelicMonitoring returned a FAILED response",
+    });
+
+    const definition = initNewRelicMonitoringTask.next(wait).next(
+      new sfn.Choice(this, "Params present?")
+        .when(sfn.Condition.stringEquals("$.status", "FAILED"), jobFailed)
+        .when(sfn.Condition.stringEquals("$.status", "SUCCEEDED"), finalStatus)
+    ).next(alertPoliciesTask);
 
     const stateMachine = new sfn.StateMachine(
       this,
