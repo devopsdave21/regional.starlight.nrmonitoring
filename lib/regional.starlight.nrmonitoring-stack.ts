@@ -66,27 +66,13 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       }
     );
 
-    const finalStatus = new tasks.LambdaInvoke(this, "Params present", {
-      lambdaFunction: paramsPresent,
-      outputPath: "$.Payload",
-    });
-
     const wait = new sfn.Wait(this, "Wait", {
       time: sfn.WaitTime.duration(Duration.seconds(3)),
     });
 
-    const jobFailed = new sfn.Fail(this, "Job Failed", {
-      cause: "AWS Batch job failed",
-      error: "initNewRelicMonitoring returned a FAILED response",
-    });
-
     const definition = initNewRelicMonitoringTask
       .next(wait)
-      .next(
-        new sfn.Choice(this, "Params present?")
-          .when(sfn.Condition.stringEquals("$.status", "FAILED"), jobFailed)
-      )
-      
+      .next(alertPoliciesTask);
 
     const stateMachine = new sfn.StateMachine(
       this,
