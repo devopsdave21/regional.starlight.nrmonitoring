@@ -21,7 +21,10 @@
   },
   "dependencies": {
     "aws-cdk-lib": "2.21.1",
+    "axios": "^0.27.2",
     "constructs": "^10.0.0",
+    "graphql": "^16.5.0",
+    "graphql-tag": "^2.12.6",
     "source-map-support": "^0.5.16"
   }
 }

@@ -17,7 +17,7 @@ exports.handler = async (event) => {
                 incidentPreference
             }
         }
-    `,
+    `;
 
     try {
         const graphqlData = await axios({
