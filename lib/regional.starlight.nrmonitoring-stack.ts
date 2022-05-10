@@ -27,14 +27,6 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       }
     );
 
-    const paramsPresent = new NodejsFunction(this, "Check status of params", {
-      functionName: "paramStatusCheck",
-      entry: "functions/paramsStatusCheck.js",
-      runtime: Runtime.NODEJS_14_X,
-      logRetention: RetentionDays.ONE_WEEK,
-      memorySize: 1024,
-    });
-
     const createAlertPolicies = new NodejsFunction(
       this,
       "Create NR Alert Policies",
@@ -66,12 +58,7 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       }
     );
 
-    const wait = new sfn.Wait(this, "Wait", {
-      time: sfn.WaitTime.duration(Duration.seconds(3)),
-    });
-
     const definition = initNewRelicMonitoringTask
-      .next(wait)
       .next(alertPoliciesTask);
 
     const stateMachine = new sfn.StateMachine(
