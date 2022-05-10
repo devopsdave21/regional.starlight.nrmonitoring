@@ -62,7 +62,7 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       "createAlertPolicies",
       {
         lambdaFunction: createAlertPolicies,
-        outputPath: "$.Payload",
+        inputPath: "$.data",
       }
     );
 
