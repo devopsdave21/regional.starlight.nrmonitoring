@@ -4,7 +4,7 @@ exports.handler = async (event) => {
     console.log(event);
 
     var API_KEY = event.data.apiKey;
-    var NR_ACCOUNT_ID = Number(event.data.newRelicAccountId);
+    var NR_ACCOUNT_ID = event.data.newRelicAccountId;
     var TEAM_NAME = event.data.teamName;
     var PAGERDUTY_KEY = event.data.pagerdutyApiKey;
     var RESULT = {};
