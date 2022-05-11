@@ -11,7 +11,7 @@ exports.handler = async (event) => {
 
   const createPolicies = gql`
     mutation {
-        _a1: alertsPolicyCreate(accountId: ${event.body.NR_ACCOUNT_ID}, policy: {incidentPreference: PER_POLICY, name: "${event.body.TEAM_NAME}"}) {
+        _a1: alertsPolicyCreate(accountId: ${event.body.NR_ACCOUNT_ID}, policy: {incidentPreference: PER_POLICY, name: "TEST"}) {
           name
           id
           incidentPreference
@@ -24,7 +24,7 @@ exports.handler = async (event) => {
       url: NR_HOST,
       method: "POST",
       headers: {
-        "Content-Type": "text/plain",
+        "Content-Type": "application/json",
         "API-KEY": event.body.API_KEY,
       },
       data: print(createPolicies),
