@@ -44,7 +44,7 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       "Scan AWS account for resources",
       {
         functionName: "scanForResources",
-        entry: "functions/scanForResources",
+        entry: "functions/scanForResources.js",
         runtime: Runtime.NODEJS_14_X,
         logRetention: RetentionDays.ONE_WEEK,
         memorySize: 1024,
