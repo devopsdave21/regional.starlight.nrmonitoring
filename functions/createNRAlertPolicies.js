@@ -11,7 +11,7 @@ exports.handler = async (event) => {
 
   const createPolicies = gql`
     mutation {
-        _a1: alertsPolicyCreate(accountId: ${event.body.NR_ACCOUNT_ID}, policy: {incidentPreference: PER_POLICY, name: "${event.body.TEAM_NAME}"}) {
+        _a1: alertsPolicyCreate(accountId: ${event.body.NR_ACCOUNT_ID}, policy: {incidentPreference: PER_POLICY, name: "${JSON.stringify(event.body.TEAM_NAME)}"}) {
           name
           id
           incidentPreference
@@ -19,17 +19,17 @@ exports.handler = async (event) => {
       }
     `;
 
-    // const policies = gql`
-    // mutation alertsPolicyCreate($accountId: ID!, $policy: AlertsPolicyInput!) {
-    //     alertsPolicyCreate(accountId: $accId, policy: {
-    //         incidentPreference: PER_POLICY, name: $name
-    //     }) {
-    //         name
-    //         id
-    //         incidentPreference
-    //     }
-    // }
-    // `
+  // const policies = gql`
+  // mutation alertsPolicyCreate($accountId: ID!, $policy: AlertsPolicyInput!) {
+  //     alertsPolicyCreate(accountId: $accId, policy: {
+  //         incidentPreference: PER_POLICY, name: $name
+  //     }) {
+  //         name
+  //         id
+  //         incidentPreference
+  //     }
+  // }
+  // `
 
   try {
     const graphqlData = await axios({
@@ -39,11 +39,9 @@ exports.handler = async (event) => {
         "Content-Type": "application/json",
         "API-KEY": event.body.API_KEY,
       },
-      data: print(createPolicies),
-      variables: {
-          accId: event.body.NR_ACCOUNT_ID,
-          name: event.body.TEAM_NAME
-      }
+      data: {
+        query: print(createPolicies),
+      },
     });
     const body = {
       graphqlData: graphqlData.data.data.createPolicies,
