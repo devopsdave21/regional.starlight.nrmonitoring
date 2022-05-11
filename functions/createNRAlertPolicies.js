@@ -27,7 +27,7 @@ exports.handler = async (event) => {
         "Content-Type": "application/json",
         "API-KEY": event.body.API_KEY,
       },
-      data: print(createPolicies),
+      data: createPolicies,
     });
     const body = {
       graphqlData: graphqlData.data.data.createPolicies,
