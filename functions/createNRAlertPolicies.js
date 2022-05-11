@@ -28,7 +28,7 @@ exports.handler = async (event) => {
                 "API-KEY": event.body.API_KEY
             },
             data: {
-                mutation: print(createPolicies)
+                print(createPolicies)
             }
         });
         const body = {
