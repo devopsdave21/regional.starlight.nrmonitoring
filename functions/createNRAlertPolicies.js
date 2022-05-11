@@ -24,7 +24,7 @@ exports.handler = async (event) => {
       url: NR_HOST,
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "text/plain",
         "API-KEY": event.body.API_KEY,
       },
       data: print(createPolicies),
