@@ -19,17 +19,17 @@ exports.handler = async (event) => {
       }
     `;
 
-    const policies = gql`
-    mutation alertsPolicyCreate($accountId: ID!, $policy: AlertsPolicyInput!) {
-        alertsPolicyCreate(accountId: $accId, policy: {
-            incidentPreference: PER_POLICY, name: $name
-        }) {
-            name
-            id
-            incidentPreference
-        }
-    }
-    `
+    // const policies = gql`
+    // mutation alertsPolicyCreate($accountId: ID!, $policy: AlertsPolicyInput!) {
+    //     alertsPolicyCreate(accountId: $accId, policy: {
+    //         incidentPreference: PER_POLICY, name: $name
+    //     }) {
+    //         name
+    //         id
+    //         incidentPreference
+    //     }
+    // }
+    // `
 
   try {
     const graphqlData = await axios({
@@ -39,7 +39,7 @@ exports.handler = async (event) => {
         "Content-Type": "application/json",
         "API-KEY": event.body.API_KEY,
       },
-      data: print(policies),
+      data: print(createPolicies),
       variables: {
           accId: event.body.NR_ACCOUNT_ID,
           name: event.body.TEAM_NAME
@@ -56,6 +56,6 @@ exports.handler = async (event) => {
       },
     };
   } catch (err) {
-    console.log("error posting to the API ", err);
+    console.log("error posting to the API ", err.data.errors);
   }
 };
