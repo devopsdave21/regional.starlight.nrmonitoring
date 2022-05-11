@@ -9,7 +9,7 @@ exports.handler = async (event) => {
 
     const NR_HOST = "https://api.newrelic.com/graphql";
 
-    const createPolicies = gql`
+    const createPolicies = `
         mutation: {
             _a1: alertPolicyCreate(accountId: ${event.body.NR_ACCOUNT_ID}, policy: {incidentPreference: PER_POLICY, name: "${event.body.TEAM_NAME}"}) {
                 name
