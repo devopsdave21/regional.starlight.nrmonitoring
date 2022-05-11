@@ -9,28 +9,6 @@ exports.handler = async (event) => {
 
   const NR_HOST = "https://api.newrelic.com/graphql";
 
-//   const createPolicies = gql`
-//     mutation {
-//         _a1: alertsPolicyCreate(accountId: ${event.body.NR_ACCOUNT_ID}, policy: {incidentPreference: PER_POLICY, name: "${event.body.TEAM_NAME}"}) {
-//           name
-//           id
-//           incidentPreference
-//         }
-//       }
-//     `;
-
-  // const policies = gql`
-  // mutation alertsPolicyCreate($accountId: ID!, $policy: AlertsPolicyInput!) {
-  //     alertsPolicyCreate(accountId: $accId, policy: {
-  //         incidentPreference: PER_POLICY, name: $name
-  //     }) {
-  //         name
-  //         id
-  //         incidentPreference
-  //     }
-  // }
-  // `
-
   try {
     const graphqlData = await axios({
       url: NR_HOST,
@@ -40,18 +18,19 @@ exports.handler = async (event) => {
         "API-KEY": event.body.API_KEY,
       },
       data: {
-          query: `mutation {
+        query: `mutation {
             _a1: alertsPolicyCreate(accountId: ${event.body.NR_ACCOUNT_ID}, policy: {incidentPreference: PER_POLICY, name: "${event.body.TEAM_NAME}"}) {
               name
               id
               incidentPreference
             }
-          }`
+          }`,
       },
     });
     const body = {
       graphqlData: graphqlData.data.data.createPolicies,
     };
+    console.log("The body of the mutation is: ", body);
     return {
       statusCode: 200,
       body: JSON.stringify(body),

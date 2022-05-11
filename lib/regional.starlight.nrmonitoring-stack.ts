@@ -39,6 +39,18 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       }
     );
 
+    const scanAccountForResources = new NodejsFunction(
+      this,
+      "Scan AWS account for resources",
+      {
+        functionName: "scanForResources",
+        entry: "functions/scanForResources",
+        runtime: Runtime.NODEJS_14_X,
+        logRetention: RetentionDays.ONE_WEEK,
+        memorySize: 1024,
+      }
+    );
+
     // Create the workflow
     const initNewRelicMonitoringTask = new tasks.LambdaInvoke(
       this,
@@ -58,8 +70,18 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       }
     );
 
+    const scanForResourcesTask = new tasks.LambdaInvoke(
+      this,
+      "scanForResources",
+      {
+        lambdaFunction: scanAccountForResources,
+        outputPath: "$.Payload",
+      }
+    );
+
     const definition = initNewRelicMonitoringTask
-      .next(alertPoliciesTask);
+      .next(alertPoliciesTask)
+      .next(scanForResourcesTask);
 
     const stateMachine = new sfn.StateMachine(
       this,
