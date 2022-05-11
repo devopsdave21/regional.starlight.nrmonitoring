@@ -11,7 +11,11 @@ exports.handler = async (event) => {
 
   const createPolicies = gql`
     mutation {
-        _a1: alertsPolicyCreate(accountId: ${event.body.NR_ACCOUNT_ID}, policy: {incidentPreference: PER_POLICY, name: "${JSON.stringify(event.body.TEAM_NAME)}"}) {
+        _a1: alertsPolicyCreate(accountId: ${
+          event.body.NR_ACCOUNT_ID
+        }, policy: {incidentPreference: PER_POLICY, name: "${JSON.stringify(
+    event.body.TEAM_NAME
+  )}"}) {
           name
           id
           incidentPreference
@@ -39,9 +43,7 @@ exports.handler = async (event) => {
         "Content-Type": "application/json",
         "API-KEY": event.body.API_KEY,
       },
-      data: {
-        query: print(createPolicies),
-      },
+      data: print(createPolicies),
     });
     const body = {
       graphqlData: graphqlData.data.data.createPolicies,
