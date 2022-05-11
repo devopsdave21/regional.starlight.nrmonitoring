@@ -11,7 +11,7 @@ exports.handler = async (event) => {
 
     const createPolicies = `
         mutation: {
-            _a1: alertPolicyCreate(accountId: ${event.body.NR_ACCOUNT_ID}, policy: {incidentPreference: PER_POLICY, name: "${event.body.TEAM_NAME}"}) {
+            _a1: alertsPolicyCreate(accountId: ${event.body.NR_ACCOUNT_ID}, policy: {incidentPreference: PER_POLICY, name: "${event.body.TEAM_NAME}"}) {
                 name
                 id
                 incidentPreference
