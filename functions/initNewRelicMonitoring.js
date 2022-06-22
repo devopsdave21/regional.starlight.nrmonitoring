@@ -19,7 +19,8 @@ exports.handler = async (event) => {
             API_KEY,
             NR_ACCOUNT_ID,
             TEAM_NAME,
-            PAGERDUTY_KEY
+            PAGERDUTY_KEY,
+            AWS_SERVICES
         }
     } else {
         console.log('Missing a param!')
