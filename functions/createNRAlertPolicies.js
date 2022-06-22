@@ -26,14 +26,13 @@ exports.handler = async (event) => {
           }`,
       },
     });
-    const newBody = {
-      graphqlData: graphqlData.data_a1,
-      eventInfo: event,
+    const body = {
+      graphqlData: graphqlData.data,
     };
-    console.log("The body of the mutation is: ", newBody);
+    console.log("The body of the mutation is: ", body);
     return {
       statusCode: 200,
-      body: event,
+      body: body,
       headers: {
         "Access-Control-Allow-Origin": "*",
       },
