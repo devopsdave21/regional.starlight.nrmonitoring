@@ -2,6 +2,8 @@ exports.handler = async (event) => {
     console.log("Checking event object contains ecs....");
   
     const services = event.body.AWS_SERVICES;
+    console.log(event.body.AWS_SERVICES);
+    console.log("The services included in the call are: ", services);
     if (services.includes("ecs")) {
       console.log("Continue creating alert conditions for ECS");
     } else {
