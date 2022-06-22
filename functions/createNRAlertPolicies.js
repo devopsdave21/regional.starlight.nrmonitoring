@@ -1,7 +1,6 @@
 const axios = require("axios");
 const gql = require("graphql-tag");
 const graphql = require("graphql");
-const { print } = graphql;
 
 exports.handler = async (event) => {
   console.log("In the create alert policies lambda");
@@ -28,7 +27,7 @@ exports.handler = async (event) => {
       },
     });
     const body = {
-      graphqlData: graphqlData.data.data.createPolicies,
+      graphqlData: graphqlData.data,
     };
     console.log("The body of the mutation is: ", body);
     return {
