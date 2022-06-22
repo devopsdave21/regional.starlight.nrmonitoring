@@ -123,7 +123,11 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
 
     const definition = initNewRelicMonitoringTask
       .next(alertPoliciesTask)
-      .next(createAlertConditionsTask);
+      .next(
+        new sfn.Parallel(this, "Do the work in parallel if body contains abreviated AWS service")
+          .branch(createEcsAlertConditionsTask)
+          .branch(createSqsAlertConditionsTask)
+      )
 
     const stateMachine = new sfn.StateMachine(
       this,
