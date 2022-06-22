@@ -32,7 +32,7 @@ exports.handler = async (event) => {
     console.log("The body of the mutation is: ", body);
     return {
       statusCode: 200,
-      body: JSON.stringify(event),
+      body: event,
       headers: {
         "Access-Control-Allow-Origin": "*",
       },

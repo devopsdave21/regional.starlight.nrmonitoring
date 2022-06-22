@@ -21,7 +21,6 @@ exports.handler = async (event) => {
             TEAM_NAME,
             PAGERDUTY_KEY,
             AWS_SERVICES,
-            service: 'ECS'
         }
     } else {
         console.log('Missing a param!')
