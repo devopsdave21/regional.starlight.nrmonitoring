@@ -123,11 +123,6 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
 
     const definition = initNewRelicMonitoringTask
       .next(alertPoliciesTask)
-      .next(new sfn.Choice(this, 'Iterate through services?')
-      // look at the 'service' field
-      .when(sfn.Condition.stringEquals('$.service', 'ECS'), createEcsAlertConditionsTask)
-      .when(sfn.Condition.stringEquals('$.service', 'SQS'), createSqsAlertConditionsTask)
-      )
       .next(createAlertConditionsTask);
 
     const stateMachine = new sfn.StateMachine(
