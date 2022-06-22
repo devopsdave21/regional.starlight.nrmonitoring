@@ -26,10 +26,11 @@ exports.handler = async (event) => {
           }`,
       },
     });
-    const body = {
+    const newBody = {
       graphqlData: graphqlData.data_a1,
+      eventInfo: event,
     };
-    console.log("The body of the mutation is: ", JSON.stringify(body));
+    console.log("The body of the mutation is: ", newBody);
     return {
       statusCode: 200,
       body: event,
