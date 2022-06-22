@@ -27,9 +27,9 @@ exports.handler = async (event) => {
       },
     });
     const body = {
-      graphqlData: graphqlData.data,
+      graphqlData: graphqlData.data_a1,
     };
-    console.log("The body of the mutation is: ", body);
+    console.log("The body of the mutation is: ", JSON.stringify(body));
     return {
       statusCode: 200,
       body: event,
