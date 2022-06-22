@@ -27,9 +27,9 @@ exports.handler = async (event) => {
       },
     });
     const body = {
-      graphqlData: graphqlData.data,
+      graphqlData: graphqlData.data._a1,
     };
-    console.log("The body of the mutation is: ", JSON.stringify(graphqlData.data._a1));
+    console.log("The body of the mutation is: ", JSON.stringify(body));
     // need to pass policy id in too
     return {
       statusCode: 200,
