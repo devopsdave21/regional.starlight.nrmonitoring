@@ -39,6 +39,30 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       }
     );
 
+    const createEcsAlerts = new NodejsFunction(
+      this,
+      "Create ECS conditions",
+      {
+        functionName: "createEcsAlerts",
+        entry: "functions/services/createEcsAlerts.js",
+        runtime: Runtime.NODEJS_14_X,
+        logRetention: RetentionDays.ONE_WEEK,
+        memorySize: 1024,
+      }
+    );
+
+    const createSqsAlerts = new NodejsFunction(
+      this,
+      "Create SQS conditions",
+      {
+        functionName: "createSqsAlerts",
+        entry: "functions/services/createSqsAlerts.js",
+        runtime: Runtime.NODEJS_14_X,
+        logRetention: RetentionDays.ONE_WEEK,
+        memorySize: 1024,
+      }
+    );
+
     const createAlertConditions = new NodejsFunction(
       this,
       "Create alert conditions",
@@ -72,15 +96,38 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
 
     const createAlertConditionsTask = new tasks.LambdaInvoke(
       this,
-      "createConditions",
+      "createEcsAlerts",
       {
-        lambdaFunction: createAlertConditions,
+        lambdaFunction: createAlertPolicies,
+        outputPath: "$.Payload",
+      }
+    );
+
+    const createEcsAlertConditionsTask = new tasks.LambdaInvoke(
+      this,
+      "createEcsConditions",
+      {
+        lambdaFunction: createEcsAlerts,
+        outputPath: "$.Payload",
+      }
+    );
+
+    const createSqsAlertConditionsTask = new tasks.LambdaInvoke(
+      this,
+      "createSqsConditions",
+      {
+        lambdaFunction: createSqsAlerts,
         outputPath: "$.Payload",
       }
     );
 
     const definition = initNewRelicMonitoringTask
       .next(alertPoliciesTask)
+      .next(new sfn.Choice(this, 'Iterate through services?')
+      // look at the 'service' field
+      .when(sfn.Condition.stringEquals('$.service', 'ECS'), createEcsAlertConditionsTask)
+      .when(sfn.Condition.stringEquals('$.service', 'SQS'), createSqsAlertConditionsTask)
+      )
       .next(createAlertConditionsTask);
 
     const stateMachine = new sfn.StateMachine(

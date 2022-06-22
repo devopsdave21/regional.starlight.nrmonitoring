@@ -20,7 +20,8 @@ exports.handler = async (event) => {
             NR_ACCOUNT_ID,
             TEAM_NAME,
             PAGERDUTY_KEY,
-            AWS_SERVICES
+            AWS_SERVICES,
+            service: 'ECS'
         }
     } else {
         console.log('Missing a param!')
@@ -30,6 +31,8 @@ exports.handler = async (event) => {
             body: RESULT
         }
     }
+
+
 
     return {
        statusCode: 200,
