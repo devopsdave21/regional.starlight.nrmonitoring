@@ -1,3 +1,8 @@
+const { default: axios } = require("axios");
+const gql = require("graphql-tag");
+const graphql = require("graphql");
+import { NEW_RELIC_URL } from "../constants";
+
 exports.handler = async (event) => {
   console.log("Checking event object contains sqs....");
 

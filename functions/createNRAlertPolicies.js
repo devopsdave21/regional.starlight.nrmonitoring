@@ -1,16 +1,16 @@
 const axios = require("axios");
 const gql = require("graphql-tag");
 const graphql = require("graphql");
+import { NEW_RELIC_URL } from "../functions/constants"
+
 
 exports.handler = async (event) => {
   console.log("In the create alert policies lambda");
   console.log(event);
 
-  const NR_HOST = "https://api.newrelic.com/graphql";
-
   try {
     const graphqlData = await axios({
-      url: NR_HOST,
+      url: NEW_RELIC_URL,
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -29,7 +29,8 @@ exports.handler = async (event) => {
     const body = {
       graphqlData: graphqlData.data,
     };
-    console.log("The body of the mutation is: ", body);
+    console.log("The body of the mutation is: ", JSON.stringify(graphqlData.data._a1));
+    // need to pass policy id in too
     return {
       statusCode: 200,
       body: event,

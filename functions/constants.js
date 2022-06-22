@@ -1,0 +1,1 @@
+export const NEW_RELIC_URL = "https://api.newrelic.com/graphql";
