@@ -10,7 +10,7 @@ exports.handler = async (event) => {
 
   try {
     const graphqlData = await axios({
-      url: NEW_RELIC_URL,
+      url: "https://api.newrelic.com/graphql",
       method: "POST",
       headers: {
         "Content-Type": "application/json",
