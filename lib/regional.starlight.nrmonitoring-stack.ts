@@ -39,12 +39,12 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       }
     );
 
-    const scanAccountForResources = new NodejsFunction(
+    const createAlertConditions = new NodejsFunction(
       this,
-      "Scan AWS account for resources",
+      "Create alert conditions",
       {
-        functionName: "scanForResources",
-        entry: "functions/scanForResources.js",
+        functionName: "createConditions",
+        entry: "functions/createConditions.js",
         runtime: Runtime.NODEJS_14_X,
         logRetention: RetentionDays.ONE_WEEK,
         memorySize: 1024,
@@ -70,18 +70,18 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       }
     );
 
-    const scanForResourcesTask = new tasks.LambdaInvoke(
+    const createAlertConditionsTask = new tasks.LambdaInvoke(
       this,
-      "scanForResources",
+      "createConditions",
       {
-        lambdaFunction: scanAccountForResources,
+        lambdaFunction: createAlertConditions,
         outputPath: "$.Payload",
       }
     );
 
     const definition = initNewRelicMonitoringTask
       .next(alertPoliciesTask)
-      .next(scanForResourcesTask);
+      .next(createAlertConditionsTask);
 
     const stateMachine = new sfn.StateMachine(
       this,

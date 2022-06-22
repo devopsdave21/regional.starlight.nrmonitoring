@@ -7,12 +7,13 @@ exports.handler = async (event) => {
     var NR_ACCOUNT_ID = event.data.newRelicAccountId;
     var TEAM_NAME = event.data.teamName;
     var PAGERDUTY_KEY = event.data.pagerdutyApiKey;
-    var RESULT = {};
+    var AWS_SERVICES = event.data.awsResources
+    var RESULT = {}
 
     // Need to validate this at the API level using models and schemas etc.
     // Should not get through to lambda for validation
 
-    if (API_KEY && NR_ACCOUNT_ID && TEAM_NAME && PAGERDUTY_KEY) {
+    if (API_KEY && NR_ACCOUNT_ID && TEAM_NAME && PAGERDUTY_KEY && AWS_SERVICES) {
         console.log('All params present and accounted for');
         RESULT = {
             API_KEY,
