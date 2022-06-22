@@ -63,12 +63,12 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       }
     );
 
-    const createAlertConditions = new NodejsFunction(
+    const createRdsAlerts = new NodejsFunction(
       this,
-      "Create alert conditions",
+      "Create RDS conditions",
       {
-        functionName: "createConditions",
-        entry: "functions/createConditions.js",
+        functionName: "createRdsAlerts",
+        entry: "functions/services/createRdsAlerts.js",
         runtime: Runtime.NODEJS_14_X,
         logRetention: RetentionDays.ONE_WEEK,
         memorySize: 1024,
@@ -94,15 +94,6 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       }
     );
 
-    const createAlertConditionsTask = new tasks.LambdaInvoke(
-      this,
-      "createEcsAlerts",
-      {
-        lambdaFunction: createAlertPolicies,
-        outputPath: "$.Payload",
-      }
-    );
-
     const createEcsAlertConditionsTask = new tasks.LambdaInvoke(
       this,
       "createEcsConditions",
@@ -117,6 +108,15 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       "createSqsConditions",
       {
         lambdaFunction: createSqsAlerts,
+        outputPath: "$.Payload",
+      }
+    );
+
+    const createRdsAlertConditionsTask = new tasks.LambdaInvoke(
+      this,
+      "createRdsConditions",
+      {
+        lambdaFunction: createRdsAlerts,
         outputPath: "$.Payload",
       }
     );
