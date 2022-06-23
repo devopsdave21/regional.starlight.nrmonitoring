@@ -15,6 +15,22 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
     super(scope, id, props);
 
     // Create lambdas
+    const createStsToken = new NodejsFunction(this, "getStsAuth", {
+      functionName: "get-sts",
+      runtime: Runtime.NODEJS_14_X,
+      entry: "functions/getStsAuth.js",
+      logRetention: RetentionDays.ONE_WEEK,
+      memorySize: 1024,
+    });
+
+    const getStatusLambda = new NodejsFunction(this, "getStatusLambda", {
+      functionName: "get-status",
+      runtime: Runtime.NODEJS_14_X,
+      entry: "functions/getStatusLambda.js",
+      logRetention: RetentionDays.ONE_WEEK,
+      memorySize: 1024,
+    });
+
     const initNewRelicMonitoring = new NodejsFunction(
       this,
       "Automated New Relic Monitoring",
@@ -39,43 +55,53 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       }
     );
 
-    const createEcsAlerts = new NodejsFunction(
+    const queryResources = new NodejsFunction(
       this,
-      "Create ECS conditions",
+      "Query the target account for resource ARNs",
       {
-        functionName: "createEcsAlerts",
-        entry: "functions/services/createEcsAlerts.js",
+        functionName: "queryResources",
+        entry: "functions/queryResources.js",
         runtime: Runtime.NODEJS_14_X,
         logRetention: RetentionDays.ONE_WEEK,
         memorySize: 1024,
       }
     );
 
-    const createSqsAlerts = new NodejsFunction(
-      this,
-      "Create SQS conditions",
-      {
-        functionName: "createSqsAlerts",
-        entry: "functions/services/createSqsAlerts.js",
-        runtime: Runtime.NODEJS_14_X,
-        logRetention: RetentionDays.ONE_WEEK,
-        memorySize: 1024,
-      }
-    );
+    const createEcsAlerts = new NodejsFunction(this, "Create ECS conditions", {
+      functionName: "createEcsAlerts",
+      entry: "functions/services/createEcsAlerts.js",
+      runtime: Runtime.NODEJS_14_X,
+      logRetention: RetentionDays.ONE_WEEK,
+      memorySize: 1024,
+    });
 
-    const createRdsAlerts = new NodejsFunction(
-      this,
-      "Create RDS conditions",
-      {
-        functionName: "createRdsAlerts",
-        entry: "functions/services/createRdsAlerts.js",
-        runtime: Runtime.NODEJS_14_X,
-        logRetention: RetentionDays.ONE_WEEK,
-        memorySize: 1024,
-      }
-    );
+    const createSqsAlerts = new NodejsFunction(this, "Create SQS conditions", {
+      functionName: "createSqsAlerts",
+      entry: "functions/services/createSqsAlerts.js",
+      runtime: Runtime.NODEJS_14_X,
+      logRetention: RetentionDays.ONE_WEEK,
+      memorySize: 1024,
+    });
+
+    const createRdsAlerts = new NodejsFunction(this, "Create RDS conditions", {
+      functionName: "createRdsAlerts",
+      entry: "functions/services/createRdsAlerts.js",
+      runtime: Runtime.NODEJS_14_X,
+      logRetention: RetentionDays.ONE_WEEK,
+      memorySize: 1024,
+    });
 
     // Create the workflow
+    const getAuthToken = new tasks.LambdaInvoke(this, "Get Auth Token", {
+      lambdaFunction: createStsToken,
+      outputPath: "$.Payload",
+    });
+
+    const getStatus = new tasks.LambdaInvoke(this, "Get Auth Status", {
+      lambdaFunction: getStatusLambda,
+      outputPath: "$.Payload",
+    });
+
     const initNewRelicMonitoringTask = new tasks.LambdaInvoke(
       this,
       "initNRParamChecker",
@@ -103,6 +129,11 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       }
     );
 
+    const queryResourcesTask = new tasks.LambdaInvoke(this, "queryResources", {
+      lambdaFunction: queryResources,
+      outputPath: "$.Payload",
+    });
+
     const createSqsAlertConditionsTask = new tasks.LambdaInvoke(
       this,
       "createSqsConditions",
@@ -121,13 +152,24 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       }
     );
 
+    const wait = new sfn.Wait(this, "Wait", {
+      time: sfn.WaitTime.duration(Duration.seconds(3)),
+    });
+
     const definition = initNewRelicMonitoringTask
+      .next(getAuthToken)
+      .next(wait)
+      .next(getStatus)
       .next(alertPoliciesTask)
+      .next(queryResourcesTask)
       .next(
-        new sfn.Parallel(this, "Do the work in parallel if body contains abreviated AWS service")
+        new sfn.Parallel(
+          this,
+          "Do the work in parallel if body contains abreviated AWS service"
+        )
           .branch(createEcsAlertConditionsTask)
           .branch(createSqsAlertConditionsTask)
-      )
+      );
 
     const stateMachine = new sfn.StateMachine(
       this,
