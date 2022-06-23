@@ -21,7 +21,6 @@ import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
     ]
 }
  */
-
 const assumeRole = async (accountId) => {
   const client = new STSClient({ region: process.env.AWS_REGION });
   const assumeRoleRequest = new AssumeRoleCommand({
@@ -55,7 +54,10 @@ exports.handler = async (event) => {
     console.log(response.Parameter.Value);
     var accountId = response.Parameter.Value
     accessParams = await assumeRole(accountId);
-    return accessParams;
+    return {
+      accessParams,
+      event
+    };
   } catch (err) {
     console.error(`There was an error calling STS ${err}`);
   }
