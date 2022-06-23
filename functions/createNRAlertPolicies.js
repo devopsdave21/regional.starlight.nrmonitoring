@@ -29,7 +29,8 @@ exports.handler = async (event) => {
     const body = {
       graphqlData: graphqlData.data,
     };
-    console.log("The body of the mutation is: ", body);
+    console.log("The body of the mutation is: ", JSON.stringify(body));
+    // Need to send policy ID back to next SF task - todo
     return {
       statusCode: 200,
       body: body,
