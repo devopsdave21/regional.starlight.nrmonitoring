@@ -32,7 +32,7 @@ exports.handler = async (event) => {
       },
     });
     const body = {
-      eventData: event,
+      event,
       graphqlData: graphqlData.data,
     };
     console.log("The body of the mutation is: ", JSON.stringify(body));

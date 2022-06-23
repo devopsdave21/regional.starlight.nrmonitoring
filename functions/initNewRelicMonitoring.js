@@ -27,7 +27,7 @@ exports.handler = async (event) => {
         return {
             statusCode: 500,
             headers: { "Content-Type": "text/plain" },
-            body: RESULT
+            RESULT
         }
     }
 
