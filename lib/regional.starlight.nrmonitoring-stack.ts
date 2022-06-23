@@ -5,6 +5,7 @@ import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { RetentionDays } from "aws-cdk-lib/aws-logs";
 import * as apig from "aws-cdk-lib/aws-apigateway";
 import * as iam from "aws-cdk-lib/aws-iam";
+import * as ssm from "aws-cdk-lib/aws-ssm";
 import * as sfn from "aws-cdk-lib/aws-stepfunctions";
 import * as tasks from "aws-cdk-lib/aws-stepfunctions-tasks";
 import { JsonSchemaType } from "aws-cdk-lib/aws-apigateway";
@@ -16,7 +17,7 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
 
     // Create lambdas
     const createStsToken = new NodejsFunction(this, "getStsAuth", {
-      functionName: "get-sts",
+      functionName: "get-sts-function",
       runtime: Runtime.NODEJS_14_X,
       entry: "functions/getStsAuth.js",
       logRetention: RetentionDays.ONE_WEEK,
@@ -24,7 +25,7 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
     });
 
     const getStatusLambda = new NodejsFunction(this, "getStatusLambda", {
-      functionName: "get-status",
+      functionName: "get-status-function",
       runtime: Runtime.NODEJS_14_X,
       entry: "functions/getStatusLambda.js",
       logRetention: RetentionDays.ONE_WEEK,
@@ -90,6 +91,35 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       logRetention: RetentionDays.ONE_WEEK,
       memorySize: 1024,
     });
+
+    const accountId = ssm.StringParameter.valueForStringParameter(
+      this,
+      "tuefideliza-account-id"
+    );
+
+    createStsToken.role?.attachInlinePolicy(
+      new iam.Policy(this, "lambda-ec2-policy", {
+        statements: [
+          new iam.PolicyStatement({
+            actions: ["sts:AssumeRole"],
+            resources: [
+              `arn:aws:iam::${accountId}:role/role_to_assume_cdk`,
+            ],
+          }),
+        ],
+      })
+    );
+
+    createStsToken.role?.attachInlinePolicy(
+      new iam.Policy(this, "ssm-get-param", {
+        statements: [
+          new iam.PolicyStatement({
+            actions: ["ssm:GetParameter"],
+            resources: ["*"],
+          }),
+        ],
+      })
+    );
 
     // Create the workflow
     const getAuthToken = new tasks.LambdaInvoke(this, "Get Auth Token", {
