@@ -4,7 +4,7 @@ const graphql = require("graphql");
 import { NEW_RELIC_URL } from "../constants"
 
 exports.handler = async (event) => {
-  console.log("Checking event object contains ecs....");
+  console.log("Checking event object contains ecs....", JSON.stringify(event));
 
   const services = event.eventData.body.AWS_SERVICES;
   console.log(event)
