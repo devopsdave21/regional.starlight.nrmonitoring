@@ -6,8 +6,8 @@ import { NEW_RELIC_URL } from "../constants"
 exports.handler = async (event) => {
   console.log("Checking event object contains ecs....", JSON.stringify(event));
 
-  const services = event.eventData.body.AWS_SERVICES;
-  console.log(event)
+  const services = event.event.RESULT.AWS_SERVICES;
+
   if (services.includes("ecs")) {
     console.log("Continue creating alert conditions for ECS");
 
@@ -17,11 +17,11 @@ exports.handler = async (event) => {
         headers: {
             "Content-Type": "application/json",
             // Store API_KEY in param store - to-do
-            "API-KEY": event.body.body.API_KEY
+            "API-KEY": event.event.RESULT.API_KEY
         },
         data: {
             query: `mutation {
-                firstQuery: alertsNrqlConditionStaticCreate(accountId: ${event.body.body.NR_ACCOUNT_ID}, policyId: ${policyId}, condition: {
+                firstQuery: alertsNrqlConditionStaticCreate(accountId: ${event.event.RESULT.NR_ACCOUNT_ID}, policyId: ${event.body.graphqlData.data._a1.id}, condition: {
                     name: "mongodb-CPU-High"
                     enabled: true
                     nrql: {
@@ -44,7 +44,7 @@ exports.handler = async (event) => {
                     id
                     name
                 }
-                secondQuery: alertsNrqlConditionStaticCreate(accountId: ${event.body.body.NR_ACCOUNT_ID}, policyId: ${policyId}, condition: {
+                secondQuery: alertsNrqlConditionStaticCreate(accountId: ${event.NR_ACCOUNT_ID}, policyId: ${event.body.graphqlData.data._a1.id}, condition: {
               name: "mongodb-Connections-High"
               enabled: true
               nrql: {

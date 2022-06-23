@@ -39,7 +39,7 @@ exports.handler = async (event) => {
     // Need to send policy ID back to next SF task - todo
     return {
       statusCode: 200,
-      body: body,
+      body,
       headers: {
         "Access-Control-Allow-Origin": "*",
       },

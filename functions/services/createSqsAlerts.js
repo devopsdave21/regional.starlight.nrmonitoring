@@ -7,7 +7,7 @@ exports.handler = async (event) => {
   console.log("Checking event object contains sqs....");
 
   console.log(JSON.stringify(event));
-  const services = event.body.body.AWS_SERVICES;
+  const services = event.event.RESULT.AWS_SERVICES;
   if (services.includes("sqs")) {
     console.log("Continue creating alert conditions for SQS");
   } else {
