@@ -6,7 +6,7 @@ import { NEW_RELIC_URL } from "../constants"
 exports.handler = async (event) => {
   console.log("Checking event object contains ecs....", JSON.stringify(event));
 
-  const services = event.event.RESULT.AWS_SERVICES;
+  const services = event.body.event.RESULT.AWS_SERVICES;
 
   if (services.includes("ecs")) {
     console.log("Continue creating alert conditions for ECS");
@@ -17,15 +17,15 @@ exports.handler = async (event) => {
         headers: {
             "Content-Type": "application/json",
             // Store API_KEY in param store - to-do
-            "API-KEY": event.event.RESULT.API_KEY
+            "API-KEY": event.body.event.RESULT.API_KEY
         },
         data: {
             query: `mutation {
-                firstQuery: alertsNrqlConditionStaticCreate(accountId: ${event.event.RESULT.NR_ACCOUNT_ID}, policyId: ${event.body.graphqlData.data._a1.id}, condition: {
+                firstQuery: alertsNrqlConditionStaticCreate(accountId: ${event.body.event.RESULT.NR_ACCOUNT_ID}, policyId: ${event.body.graphqlData.data._a1.id}, condition: {
                     name: "mongodb-CPU-High"
                     enabled: true
                     nrql: {
-                        query: "SELECT average('cpuPercent') FROM SystemSample WHERE entityGuid = ${guid}"
+                        query: "SELECT average('cpuPercent') FROM SystemSample WHERE entityGuid = 1231453643643"
                     }
                     signal: {
                         aggregationWindow: 60
