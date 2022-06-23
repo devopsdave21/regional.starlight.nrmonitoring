@@ -30,9 +30,6 @@ exports.handler = async (event) => {
             RESULT
         }
     }
-
-
-
     return {
        statusCode: 200,
        headers: { "Content-Type": "text/plain" },

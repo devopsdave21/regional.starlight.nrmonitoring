@@ -6,17 +6,19 @@ exports.handler = async (event) => {
   // Need a way to dynamically set up IAM role to query target account...
 
   var accessParams = {
-    accessKeyId: event.accessKeyId,
-    secretAccessKey: event.secretAccessKey,
-    sessionToken: event.sessionToken,
+    accessKeyId: event.accessParams.accessKeyId,
+    secretAccessKey: event.accessParams.secretAccessKey,
+    sessionToken: event.accessParams.sessionToken,
   };
+
+  console.log(`Access params are ${accessParams}`);
 
   try {
     const client = new ECSClient({
-        region: process.env.AWS_REGION,
-        credentials: accessParams,
-    })
+      region: process.env.AWS_REGION,
+      credentials: accessParams,
+    });
   } catch (err) {
-      console.log(err)
+    console.log(err);
   }
 };
