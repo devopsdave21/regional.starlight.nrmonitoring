@@ -32,7 +32,8 @@ exports.handler = async (event) => {
       },
     });
     const body = {
-      graphqlData: graphqlData.data,
+      eventData: event,
+      graphqlData: graphqlData.data._a1.id,
     };
     console.log("The body of the mutation is: ", JSON.stringify(body));
     // Need to send policy ID back to next SF task - todo
