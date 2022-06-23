@@ -1,6 +1,6 @@
 exports.handler = async (event) => {
   console.log(event.status);
-  if (event.status === "SUCCEEDED") {
+  if (event.accessParams.status === "SUCCEEDED") {
     console.log("Successful in getting STS: ", event);
     // This is passed onto anything that is in the chain - need to pass in the credentials
     return {
