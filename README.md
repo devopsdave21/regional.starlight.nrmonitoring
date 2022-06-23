@@ -1,14 +1,21 @@
-# Welcome to your CDK TypeScript project
+# Automated alerting in New Relic
 
-This is a blank project for CDK development with TypeScript.
+This utility creates alert policy and corresponding conditions in New Relic using
+the NerdGraph API.
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+The utility requires the following payload as input:
 
-## Useful commands
+{
+	  "data": {
+	    "apiKey": "NRAK-******************",
+	    "newRelicAccountId": 1234567,
+	    "teamName": "CloudOps-Regional-UKI-ES",
+	    "pagerdutyApiKey": "**************************",
+	    "awsResources": [
+	      "ecs",
+	      "sqs",
+	      "rds"
+	    ]
+	  }
+}
 
-* `npm run build`   compile typescript to js
-* `npm run watch`   watch for changes and compile
-* `npm run test`    perform the jest unit tests
-* `cdk deploy`      deploy this stack to your default AWS account/region
-* `cdk diff`        compare deployed stack with current state
-* `cdk synth`       emits the synthesized CloudFormation template
