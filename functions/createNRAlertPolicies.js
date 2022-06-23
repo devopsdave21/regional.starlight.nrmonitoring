@@ -19,11 +19,11 @@ exports.handler = async (event) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "API-KEY": event.body.API_KEY,
+        "API-KEY": event.result.API_KEY,
       },
       data: {
         query: `mutation {
-            _a1: alertsPolicyCreate(accountId: ${event.body.NR_ACCOUNT_ID}, policy: {incidentPreference: PER_POLICY, name: "${event.body.TEAM_NAME}"}) {
+            _a1: alertsPolicyCreate(accountId: ${event.result.NR_ACCOUNT_ID}, policy: {incidentPreference: PER_POLICY, name: "${event.result.TEAM_NAME}"}) {
               name
               id
               incidentPreference
