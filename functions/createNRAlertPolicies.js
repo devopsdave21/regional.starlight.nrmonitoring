@@ -45,7 +45,7 @@ exports.handler = async (event) => {
       },
     };
   } catch (err) {
-    console.log("error posting to the API ", err);
+    console.log("error posting to New Relic API ", err);
   }
 
   

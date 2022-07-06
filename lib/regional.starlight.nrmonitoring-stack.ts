@@ -24,6 +24,12 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       memorySize: 1024,
     });
 
+    const getServicesWorker = new NodejsFunction(this, "getServicesWorker", {
+      functionName: "get-services-worker",
+      runtime: Runtime.NODEJS_14_X,
+      entry: "functions/workers/getServicesWorker.js"
+    })
+
     const getStatusLambda = new NodejsFunction(this, "getStatusLambda", {
       functionName: "get-status-function",
       runtime: Runtime.NODEJS_14_X,
@@ -266,6 +272,11 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       },
     });
 
+    new apig.LambdaRestApi(this, 'Endpoint', {
+      handler: getServicesWorker
+    })
+
+    // Need API gateway top invoke getServicesWorker lambda. This will then invoke the correct SF
     const api = apigateway.root.addMethod(
       "POST",
       new apig.AwsIntegration({

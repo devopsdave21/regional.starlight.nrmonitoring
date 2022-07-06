@@ -43,20 +43,20 @@ exports.handler = async (event) => {
   var accessParams;
   try {
     const client = new SSMClient({
-      region: process.env.AWS_REGION
+      region: process.env.AWS_REGION,
     });
     const input = {
-      Name: 'tuefideliza-account-id',
-      WithDecryption: false
-    }
+      Name: "tuefideliza-account-id",
+      WithDecryption: false,
+    };
     const command = new GetParameterCommand(input);
     const response = await client.send(command);
     console.log(response.Parameter.Value);
-    var accountId = response.Parameter.Value
+    var accountId = response.Parameter.Value;
     accessParams = await assumeRole(accountId);
     return {
       accessParams,
-      event
+      event,
     };
   } catch (err) {
     console.error(`There was an error calling STS ${err}`);
