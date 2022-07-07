@@ -297,7 +297,7 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
 
     const getServices = api2.root.addResource('getServices');
 
-    getServices.addMethod('POST', new apig.LambdaIntegration(getServicesWorker, {proxy: false}))
+    getServices.addMethod('POST', new apig.LambdaIntegration(getServicesWorker, {proxy: true}))
 
     const api = apigateway.root.addMethod(
       "POST",
