@@ -277,6 +277,28 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       handler: getServicesWorker
     })
 
+    const api2 = new apig.RestApi(this, 'api', {
+      description: 'example non-proxy lambda API',
+      deployOptions: {
+        stageName: 'dev',
+      },
+      defaultCorsPreflightOptions: {
+        allowHeaders: [
+          'Content-Type',
+          'X-Amz-Date',
+          'Authorization',
+          'X-Api-Key'
+        ],
+        allowMethods: ['POST'],
+        allowCredentials: true,
+        allowOrigins: ['http://localhost:3000',]
+      },
+    });
+
+    const getServices = api2.root.addResource('getServices');
+
+    getServices.addMethod('POST', new apig.LambdaIntegration(getServicesWorker, {proxy: false}))
+
     const api = apigateway.root.addMethod(
       "POST",
       new apig.AwsIntegration({
