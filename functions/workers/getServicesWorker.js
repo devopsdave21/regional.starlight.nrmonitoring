@@ -7,6 +7,18 @@ exports.handler = async (event) => {
     data
   );
 
+  const variable = event.body.data;
+
+if (
+  typeof variable === 'object' &&
+  variable !== null &&
+  !Array.isArray(variable)
+) {
+  console.log('✅ Value is an object');
+} else {
+  console.log('⛔️ Value is not an object');
+}
+
   const response = {
     statusCode: 233,
     headers: {
