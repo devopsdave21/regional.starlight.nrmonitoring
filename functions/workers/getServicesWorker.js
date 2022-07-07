@@ -1,7 +1,8 @@
 exports.handler = async (event) => {
+  var data = event.body.trim();
   console.log(
     "Parsing input for services to invoke correct step function",
-    JSON.parse(event.body.data)
+    JSON.parse(data)
   );
 
   const response = {
