@@ -8,7 +8,7 @@ console.log(resources);
     headers: {
       "Access-Control-Allow-Origin": "*",
     },
-    body: JSON.stringify(awsResources),
+    body: JSON.stringify(resources),
     isBase64Encoded: false,
   };
 
