@@ -272,11 +272,11 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       },
     });
 
+    // Greedy proxy (all / ) to worker lambda
     new apig.LambdaRestApi(this, 'Endpoint', {
       handler: getServicesWorker
     })
 
-    // Need API gateway top invoke getServicesWorker lambda. This will then invoke the correct SF
     const api = apigateway.root.addMethod(
       "POST",
       new apig.AwsIntegration({
