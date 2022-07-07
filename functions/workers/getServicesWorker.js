@@ -1,7 +1,7 @@
 exports.handler = async (event) => {
   console.log(
     "Parsing input for services to invoke correct step function",
-    event.body.data
+    event.body
   );
 
   const response = {
@@ -9,7 +9,7 @@ exports.handler = async (event) => {
     headers: {
       "Access-Control-Allow-Origin": "*",
     },
-    body: JSON.stringify(event.body.data),
+    body: JSON.stringify(event.body),
     isBase64Encoded: false,
   };
 
