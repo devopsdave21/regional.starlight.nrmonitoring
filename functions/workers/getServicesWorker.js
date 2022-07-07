@@ -8,8 +8,9 @@ console.log(resources);
     statusCode: 233,
     headers: {
       "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json"
     },
-    body: JSON.stringify(resources),
+    body: JSON.stringify(event.body.apiKey),
     isBase64Encoded: false,
   };
 
