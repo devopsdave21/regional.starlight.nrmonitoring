@@ -1,5 +1,6 @@
 exports.handler = async (event) => {
 var resources = event.data.awsResources;
+console.log(event);
 
 console.log(resources);
 
