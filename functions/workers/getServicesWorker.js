@@ -1,8 +1,8 @@
 exports.handler = async (event) => {
 //var resources = event.data.awsResources;
 console.log(event);
-
-console.log(resources);
+let result = JSON.parse(event.body);
+console.log(result.data.apiKey);
 
   const response = {
     statusCode: 233,
@@ -10,7 +10,7 @@ console.log(resources);
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(event.body.apiKey),
+    body: JSON.stringify(result),
     isBase64Encoded: false,
   };
 
