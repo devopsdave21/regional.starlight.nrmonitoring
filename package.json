@@ -21,7 +21,8 @@
   },
   "dependencies": {
     "@aws-sdk/client-ecs": "^3.115.0",
-    "@aws-sdk/client-ssm": "^3.112.0",
+    "@aws-sdk/client-sfn": "^3.121.0",
+    "@aws-sdk/client-ssm": "^3.121.0",
     "@aws-sdk/client-sts": "^3.112.0",
     "aws-cdk-lib": "2.21.1",
     "aws-sdk": "^2.1160.0",
