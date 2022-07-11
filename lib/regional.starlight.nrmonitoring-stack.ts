@@ -125,6 +125,18 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       })
     );
 
+    getServicesWorker.role?.attachInlinePolicy(
+      new iam.Policy(this, "start-stepfunction", {
+        statements: [
+          new iam.PolicyStatement({
+            actions: ["states:StartExecution"],
+            effect: iam.Effect.ALLOW,
+            resources: ["*"],
+          }),
+        ],
+      })
+    );
+
     createStsToken.role?.attachInlinePolicy(
       new iam.Policy(this, "ssm-sts-get-param", {
         statements: [
