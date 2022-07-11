@@ -53,6 +53,7 @@ exports.handler = async (event) => {
     const client = new SFNClient({ region: process.env.AWS_REGION });
     const input = {
       stateMachineArn: SM_ARN,
+      input: event.body,
     };
     const command = new StartExecutionCommand(input);
     const response = await client.send(command);
