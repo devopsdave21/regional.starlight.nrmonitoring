@@ -19,7 +19,8 @@ const getSecrets = async (techStackRef) => {
         WithDecryption: false,
       };
       const command = new GetParameterCommand(input);
-      const smArn = await client.send(command);
+      const response = await client.send(command);
+      return response;
     } catch (err) {
       console.log("There was an error getting the param");
     }
@@ -27,7 +28,6 @@ const getSecrets = async (techStackRef) => {
   if (techStackRef.includes("ec2")) {
     console.log("Grabbing ec2 tech stack state machine arn for invocation...");
   }
-  return smArn;
 };
 
 exports.handler = async (event) => {
