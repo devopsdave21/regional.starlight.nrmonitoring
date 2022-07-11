@@ -11,18 +11,19 @@ const getSecrets = async (techStackRef) => {
 
   // For now, just test with knowing it will be ECS
   if (techStackRef.includes("ecs")) {
-      console.log('Contains ECS service...grabbing ARN for step function...')
+    console.log("Contains ECS service...grabbing ARN for step function...");
     let techStackParam = "/monitoring/ecsTechStack";
     try {
       const client = new SSMClient({ region: process.env.AWS_REGION });
       const input = {
-        Name: '/monitoring/ecsTechStack',
+        Name: techStackParam,
         WithDecryption: false,
       };
       const command = new GetParameterCommand(input);
       const response = await client.send(command);
-      console.log('The response was: ', response);
-      return response;
+      console.log("The response was: ", response);
+      console.log('The ARN of step function is: ', response.Parameter.Value)
+      return response.Parameter.Value;
     } catch (err) {
       console.log("There was an error getting the param");
     }
@@ -44,37 +45,8 @@ exports.handler = async (event) => {
   console.log(`Services included in payload are ${result.data.awsResources}`);
   var services = result.data.awsResources;
 
-//   SM_ARN = await getSecrets(services);
-//   console.log(SM_ARN);
-try {
-    console.log(
-        "Grabbing state machine ARN from param store that maps to: ",
-        services
-      );
-      // Passing in the services array. This function will decide which secret to get
-      // based on tech stack param.
-    
-      // For now, just test with knowing it will be ECS
-      if (services.includes("ecs")) {
-          console.log('Contains ECS service...grabbing ARN for step function...')
-        let techStackParam = "/monitoring/ecsTechStack";
-        try {
-          const client = new SSMClient({ region: process.env.AWS_REGION });
-          const input = {
-            Name: '/monitoring/ecsTechStack',
-            WithDecryption: false,
-          };
-          const command = new GetParameterCommand(input);
-          const response = await client.send(command);
-          console.log('The response was: ', response);
-          return response;
-        } catch (err) {
-          console.log("There was an error getting the param: ", err);
-        }
-      }
-} catch (err) {
-    console.log("Error getting param")
-}
+  SM_ARN = await getSecrets(services);
+  console.log(SM_ARN);
 
   // Invoke SF here
   try {
