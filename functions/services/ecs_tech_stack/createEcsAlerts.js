@@ -2,19 +2,12 @@ const { default: axios } = require("axios");
 const gql = require("graphql-tag");
 const graphql = require("graphql");
 import { NEW_RELIC_URL } from "../../constants";
+const { SSMClient, GetParameterCommand } = require("@aws-sdk/client-ssm");
 
 exports.handler = async (event) => {
-  console.log("Checking event object contains ecs....", JSON.stringify(event));
+  console.log("Creating ECS cluster alerts now....", JSON.stringify(event));
 
   const CLUSTER_ARNS = []
-
-  const services = event.body.event.RESULT.AWS_SERVICES;
-
-
-  if (services.includes("ecs")) {
-    console.log("Continue creating alert conditions for ECS");
-
-    // Need to pass in the resource ARN's
 
     try {
       try {
@@ -83,15 +76,10 @@ exports.handler = async (event) => {
     } catch (err) {
       console.log(err);
     }
-  } else {
-    return {
-      statusCode: 500,
-    };
-  }
 
   return {
     statusCode: 200,
-    body: services,
+    body: event,
     headers: { "Content-Type": "text/plain" },
   };
 };

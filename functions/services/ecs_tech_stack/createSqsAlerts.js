@@ -4,17 +4,7 @@ const graphql = require("graphql");
 import { NEW_RELIC_URL } from "../../constants";
 
 exports.handler = async (event) => {
-  console.log("Checking event object contains sqs....");
-
-  console.log(JSON.stringify(event));
-  const services = event.body.event.RESULT.AWS_SERVICES;
-  if (services.includes("sqs")) {
-    console.log("Continue creating alert conditions for SQS");
-  } else {
-    return {
-      statusCode: 500,
-    };
-  }
+  console.log("Creating SQS alerts now...", event)
 
   return {
     statusCode: 200,
