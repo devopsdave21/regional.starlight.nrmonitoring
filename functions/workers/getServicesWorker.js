@@ -48,6 +48,7 @@ console.log(SM_ARN)
             stateMachineArn: SM_ARN
         }
         const response = await client.send(command);
+        console.log(response);
     } catch (err) {
       console.log("There was an error: ", err);
     }
