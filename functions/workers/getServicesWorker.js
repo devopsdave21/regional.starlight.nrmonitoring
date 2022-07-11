@@ -47,6 +47,7 @@ console.log(SM_ARN)
         const command = new StartExecutionCommand = {
             stateMachineArn: SM_ARN
         }
+        const response = await client.send(command);
     } catch (err) {
       console.log("There was an error: ", err);
     }
