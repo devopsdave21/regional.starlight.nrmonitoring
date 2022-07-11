@@ -27,8 +27,8 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
     const getServicesWorker = new NodejsFunction(this, "getServicesWorker", {
       functionName: "get-services-worker",
       runtime: Runtime.NODEJS_14_X,
-      entry: "functions/workers/getServicesWorker.js"
-    })
+      entry: "functions/workers/getServicesWorker.js",
+    });
 
     const getStatusLambda = new NodejsFunction(this, "getStatusLambda", {
       functionName: "get-status-function",
@@ -108,9 +108,18 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
         statements: [
           new iam.PolicyStatement({
             actions: ["sts:AssumeRole"],
-            resources: [
-              `arn:aws:iam::${accountId}:role/role_to_assume_cdk`,
-            ],
+            resources: [`arn:aws:iam::${accountId}:role/role_to_assume_cdk`],
+          }),
+        ],
+      })
+    );
+
+    getServicesWorker.role?.attachInlinePolicy(
+      new iam.Policy(this, "ssm-get-param", {
+        statements: [
+          new iam.PolicyStatement({
+            actions: ["ssm:GetParameter"],
+            resources: ["*"],
           }),
         ],
       })
@@ -273,9 +282,9 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
     });
 
     // Greedy proxy (all / ) to worker lambda
-    new apig.LambdaRestApi(this, 'Endpoint', {
-      handler: getServicesWorker
-    })
+    new apig.LambdaRestApi(this, "Endpoint", {
+      handler: getServicesWorker,
+    });
 
     const api = apigateway.root.addMethod(
       "POST",
