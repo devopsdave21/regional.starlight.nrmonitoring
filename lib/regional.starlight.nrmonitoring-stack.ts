@@ -62,21 +62,9 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       }
     );
 
-    const queryResources = new NodejsFunction(
-      this,
-      "Query the target account for resource ARNs",
-      {
-        functionName: "queryResources",
-        entry: "functions/queryResources.js",
-        runtime: Runtime.NODEJS_14_X,
-        logRetention: RetentionDays.ONE_WEEK,
-        memorySize: 1024,
-      }
-    );
-
     const createEcsAlerts = new NodejsFunction(this, "Create ECS conditions", {
       functionName: "createEcsAlerts",
-      entry: "functions/services/createEcsAlerts.js",
+      entry: "functions/services/ecs_tech_stack/createEcsAlerts.js",
       runtime: Runtime.NODEJS_14_X,
       logRetention: RetentionDays.ONE_WEEK,
       memorySize: 1024,
@@ -84,7 +72,7 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
 
     const createSqsAlerts = new NodejsFunction(this, "Create SQS conditions", {
       functionName: "createSqsAlerts",
-      entry: "functions/services/createSqsAlerts.js",
+      entry: "functions/services/ecs_tech_stack/createSqsAlerts.js",
       runtime: Runtime.NODEJS_14_X,
       logRetention: RetentionDays.ONE_WEEK,
       memorySize: 1024,
@@ -92,7 +80,7 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
 
     const createRdsAlerts = new NodejsFunction(this, "Create RDS conditions", {
       functionName: "createRdsAlerts",
-      entry: "functions/services/createRdsAlerts.js",
+      entry: "functions/services/ecs_tech_stack/createRdsAlerts.js",
       runtime: Runtime.NODEJS_14_X,
       logRetention: RetentionDays.ONE_WEEK,
       memorySize: 1024,
@@ -186,11 +174,6 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       }
     );
 
-    const queryResourcesTask = new tasks.LambdaInvoke(this, "queryResources", {
-      lambdaFunction: queryResources,
-      outputPath: "$.Payload",
-    });
-
     const createSqsAlertConditionsTask = new tasks.LambdaInvoke(
       this,
       "createSqsConditions",
@@ -218,7 +201,6 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       .next(wait)
       .next(getStatus)
       .next(alertPoliciesTask)
-      .next(queryResourcesTask)
       .next(
         new sfn.Parallel(
           this,
@@ -226,6 +208,7 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
         )
           .branch(createEcsAlertConditionsTask)
           .branch(createSqsAlertConditionsTask)
+          .branch(createRdsAlertConditionsTask)
       );
 
     const stateMachine = new sfn.StateMachine(
