@@ -20,6 +20,7 @@ const getSecrets = async (techStackRef) => {
       };
       const command = new GetParameterCommand(input);
       const response = await client.send(command);
+      console.log('The response was: ', response);
       return response;
     } catch (err) {
       console.log("There was an error getting the param");
