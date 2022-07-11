@@ -10,7 +10,7 @@ const getSecrets = async (techStackRef) => {
   // based on tech stack param.
 
   // For now, just test with knowing it will be ECS
-  if (techStackRef.incluedes("ecs")) {
+  if (techStackRef.includes("ecs")) {
     let techStackParam = "/monitoring/ecsTechStack";
     try {
       const client = new SSMClient({ region: process.env.AWS_REGION });
