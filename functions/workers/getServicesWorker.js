@@ -22,7 +22,7 @@ exports.handler = async (event) => {
   let result = JSON.parse(event.body);
 
   // Get secrts params
-  const SM_ARN = "";
+  let SM_ARN = "";
 
   // Parse awsResources to invoke. Need to limit on client-side tech stack.
 
