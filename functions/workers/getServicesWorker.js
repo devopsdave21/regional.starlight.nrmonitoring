@@ -15,7 +15,7 @@ const getSecrets = async (techStackRef) => {
     try {
       const client = new SSMClient({ region: process.env.AWS_REGION });
       const input = {
-        Name: techStackParam,
+        Name: '/monitoring/ecsTechStack',
         WithDecryption: false,
       };
       const command = new GetParameterCommand(input);
