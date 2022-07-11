@@ -69,7 +69,7 @@ try {
           console.log('The response was: ', response);
           return response;
         } catch (err) {
-          console.log("There was an error getting the param");
+          console.log("There was an error getting the param: ", err);
         }
       }
 } catch (err) {
