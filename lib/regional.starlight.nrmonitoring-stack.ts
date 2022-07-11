@@ -115,7 +115,7 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
     );
 
     getServicesWorker.role?.attachInlinePolicy(
-      new iam.Policy(this, "ssm-get-param", {
+      new iam.Policy(this, "ssm-worker-get-param", {
         statements: [
           new iam.PolicyStatement({
             actions: ["ssm:GetParameter"],
@@ -126,7 +126,7 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
     );
 
     createStsToken.role?.attachInlinePolicy(
-      new iam.Policy(this, "ssm-get-param", {
+      new iam.Policy(this, "ssm-sts-get-param", {
         statements: [
           new iam.PolicyStatement({
             actions: ["ssm:GetParameter"],
