@@ -3,11 +3,11 @@ const { Console } = require("console");
 exports.handler = async (event) => {
     console.log(event);
 
-    var API_KEY = event.data.data.apiKey;
-    var NR_ACCOUNT_ID = event.data.data.newRelicAccountId;
-    var TEAM_NAME = event.data.data.teamName;
-    var PAGERDUTY_KEY = event.data.data.pagerdutyApiKey;
-    var AWS_SERVICES = event.data.data.awsResources
+    var API_KEY = event.data.apiKey;
+    var NR_ACCOUNT_ID = event.data.newRelicAccountId;
+    var TEAM_NAME = event.data.teamName;
+    var PAGERDUTY_KEY = event.data.pagerdutyApiKey;
+    var AWS_SERVICES = event.data.awsResources
     var RESULT = {}
 
     // Need to validate this at the API level using models and schemas etc.
