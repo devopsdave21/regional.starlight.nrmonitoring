@@ -19,7 +19,7 @@ exports.handler = async (event) => {
         "API-KEY": event.body.event.event.event.RESULT.API_KEY,
       },
       data: {
-        query: `mutation {
+        query: `query {
                 {
                     actor {
                       entitySearch(queryBuilder: {infrastructureIntegrationType: AWS_ECS_CLUSTER}) {
