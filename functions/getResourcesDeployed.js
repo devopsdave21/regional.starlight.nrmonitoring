@@ -1,7 +1,7 @@
 const { default: axios } = require("axios");
 const gql = require("graphql-tag");
 const graphql = require("graphql");
-import { NEW_RERLIC_URL } from "./constants";
+import { NEW_RELIC_URL } from "./constants";
 
 exports.handler = async (event) => {
   console.log(
@@ -11,7 +11,7 @@ exports.handler = async (event) => {
   try {
     console.log("Querying for resources now...");
     const getResources = await axios({
-      url: NEW_RERLIC_URL,
+      url: NEW_RELIC_URL,
       method: "POST",
       headers: {
         "Content-Type": "application/json",
