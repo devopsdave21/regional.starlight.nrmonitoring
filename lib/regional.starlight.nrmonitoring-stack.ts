@@ -62,6 +62,18 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       }
     );
 
+    const queryResources = new NodejsFunction(
+      this,
+      "Querying NR for entity GUIDS",
+      {
+        functionName: "queryNRResources",
+        entry: "functions/getResourcesDeployed",
+        runtime: Runtime.NODEJS_14_X,
+        logRetention: RetentionDays.ONE_WEEK,
+        memorySize: 1024,
+      }
+    );
+
     const createEcsAlerts = new NodejsFunction(this, "Create ECS conditions", {
       functionName: "createEcsAlerts",
       entry: "functions/services/ecs_tech_stack/createEcsAlerts.js",
@@ -174,6 +186,15 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       }
     );
 
+    const queryForResourcesTask = new tasks.LambdaInvoke(
+      this,
+      "queryForResources",
+      {
+        lambdaFunction: queryResources,
+        outputPath: "$.Payload",
+      }
+    );
+
     const createSqsAlertConditionsTask = new tasks.LambdaInvoke(
       this,
       "createSqsConditions",
@@ -201,6 +222,7 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       .next(wait)
       .next(getStatus)
       .next(alertPoliciesTask)
+      .next(queryForResourcesTask)
       .next(
         new sfn.Parallel(
           this,

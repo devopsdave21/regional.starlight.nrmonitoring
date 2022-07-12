@@ -22,6 +22,7 @@ exports.handler = async (event) => {
           // Store API_KEY in param store - to-do
           "API-KEY": event.body.event.RESULT.API_KEY,
         },
+        // TODO need to get entityGuid prior to hitting creating alerts
         data: {
           query: `mutation {
                     firstQuery: alertsNrqlConditionStaticCreate(accountId: ${event.body.event.RESULT.NR_ACCOUNT_ID}, policyId: ${event.body.graphqlData.data._a1.id}, condition: {

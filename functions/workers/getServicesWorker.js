@@ -10,6 +10,8 @@ const getSecrets = async (techStackRef) => {
   // based on tech stack param.
 
   // For now, just test with knowing it will be ECS
+  // TODO - Implement this at the API layer as potential params in URL path
+  
   if (techStackRef.includes("ecs")) {
     console.log("Contains ECS service...grabbing ARN for step function...");
     let techStackParam = "/monitoring/ecsTechStack";
