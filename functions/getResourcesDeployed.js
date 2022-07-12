@@ -16,7 +16,7 @@ exports.handler = async (event) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "API-KEY": body.event.event.RESULT.API_KEY,
+        "API-KEY": event.body.event.event.RESULT.API_KEY,
       },
       data: {
         query: `mutation {
