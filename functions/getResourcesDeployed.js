@@ -55,7 +55,7 @@ const queryForResources = async (obj) => {
     console.log("There was an error: ", err);
     return {
       statusCode: 500,
-      body: event,
+      body: response,
     };
   }
 };
