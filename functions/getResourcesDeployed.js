@@ -20,7 +20,6 @@ exports.handler = async (event) => {
       },
       data: {
         query: `query {
-                {
                     actor {
                       entitySearch(queryBuilder: {infrastructureIntegrationType: AWS_ECS_CLUSTER}) {
                         count
