@@ -16,7 +16,7 @@ const queryForResources = async (obj) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "API-KEY": obj.accountId,
+        "API-KEY": obj.NrAPIKey,
       },
       data: {
         query: `query {
