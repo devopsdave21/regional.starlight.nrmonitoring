@@ -5,7 +5,8 @@ import { NEW_RELIC_URL } from "./constants";
 
 exports.handler = async (event) => {
   console.log(
-    "Querying New Relic for resources to get entity guids to use in mutations...", event
+    "Querying New Relic for resources to get entity guids to use in mutations...",
+    JSON.stringify(event)
   );
 
   try {
