@@ -67,7 +67,7 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
       "Querying NR for entity GUIDS",
       {
         functionName: "queryNRResources",
-        entry: "functions/getResourcesDeployed",
+        entry: "functions/getResourcesDeployed.js",
         runtime: Runtime.NODEJS_14_X,
         logRetention: RetentionDays.ONE_WEEK,
         memorySize: 1024,
