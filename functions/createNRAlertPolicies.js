@@ -9,7 +9,7 @@ exports.handler = async (event) => {
   const NR_HOST = "https://api.newrelic.com/graphql";
 
   /*
-  Need to put some logic in here to check if an alert policy has already been created
+  TODO - Need to put some logic in here to check if an alert policy has already been created
   with this name
   */
 
@@ -36,7 +36,6 @@ exports.handler = async (event) => {
       graphqlData: graphqlData.data,
     };
     console.log("The body of the mutation is: ", JSON.stringify(body));
-    // Need to send policy ID back to next SF task - todo
     return {
       statusCode: 200,
       body,

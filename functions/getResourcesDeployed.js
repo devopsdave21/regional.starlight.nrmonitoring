@@ -20,27 +20,26 @@ exports.handler = async (event) => {
       },
       data: {
         query: `query {
-                    actor {
-                      entitySearch(queryBuilder: {infrastructureIntegrationType: AWS_ECS_CLUSTER}) {
-                        count
-                        query
-                        results {
-                          nextCursor
-                          entities {
-                            accountId
-                            entityType
-                            guid
-                            name
-                            type
-                            account {
-                              id
-                            }
-                          }
-                        }
+            actor {
+                entitySearch(queryBuilder: {infrastructureIntegrationType: AWS_ECS_CLUSTER}) {
+                  count
+                  query
+                  results {
+                    nextCursor
+                    entities {
+                      accountId
+                      entityType
+                      guid
+                      name
+                      type
+                      account {
+                        id
                       }
                     }
                   }
-            }`,
+                }
+              }
+        }`,
       },
     });
     const response = getResources.data;
