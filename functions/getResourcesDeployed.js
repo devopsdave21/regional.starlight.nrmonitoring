@@ -20,7 +20,7 @@ exports.handler = async (event) => {
       },
       data: {
         query: `mutation {
-                _a1: {
+                {
                     actor {
                       entitySearch(queryBuilder: {infrastructureIntegrationType: AWS_ECS_CLUSTER}) {
                         count
