@@ -3,9 +3,17 @@ const gql = require("graphql-tag");
 const graphql = require("graphql");
 import { NEW_RELIC_URL } from "./constants";
 
-const queryForResources = async (obj) => {
+/*
+TODO 
+    1.Add query for ECS service
+    2.Add query for SQS services
+    3.Add query for RDS services
+
+*/
+
+const queryForResourcesEcs = async (obj) => {
   console.log(
-    `Querying NR account for resources deployed for account ID ${obj.accountId}`
+    `Querying NR account for ECS Cluster resources deployed for account ID ${obj.accountId}`
   );
   // ECS Clusters resources deployed in NR
   // TODO - Need to put some logic in here to cater for multiple cluster under same account ID
@@ -60,14 +68,24 @@ const queryForResources = async (obj) => {
   }
 };
 
+const queryForResourcesSqs = async (obj) => {
+  console.log("Querying NR account for any SQS queues...");
+};
+
+const queryForResourcesRds = async (obj) => {
+  console.log("Querying NR account for RDS databases/clusters....");
+};
+
 exports.handler = async (event) => {
   console.log(
     "Querying New Relic for resources to get entity guids to use in mutations...",
     JSON.stringify(event)
   );
-  const result = await queryForResources({
+  const resultEcs = await queryForResourcesEcs({
     accountId: event.body.event.event.event.RESULT.NR_ACCOUNT_ID,
     NrAPIKey: event.body.event.event.event.RESULT.API_KEY,
   });
+  const sqsResult = await queryForResourcesSqs();
+  const rdsResult = await queryForResourcesRds();
   console.log(result);
 };
