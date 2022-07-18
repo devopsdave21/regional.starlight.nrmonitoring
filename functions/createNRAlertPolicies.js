@@ -42,6 +42,7 @@ const getAlertPolicies = async (e) => {
 }
 
 exports.handler = async (event) => {
+  NR_API_KEY = event.event.event.RESULT.API_KEY
   console.log("In the create alert policies lambda");
   console.log(event);
   console.log('Seeing if alert policy has already veeb created...')
@@ -51,8 +52,6 @@ exports.handler = async (event) => {
   TODO - Need to put some logic in here to check if an alert policy has already been created
   with this name
   */
-
-  NR_API_KEY = event.event.event.RESULT.API_KEY
 
   try {
     const graphqlData = await axios({
