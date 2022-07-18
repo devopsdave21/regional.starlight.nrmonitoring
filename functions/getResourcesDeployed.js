@@ -11,6 +11,8 @@ TODO
 
 */
 
+const CLUSTER_GUID = "";
+
 const queryForResourcesEcs = async (obj) => {
   console.log(
     `Querying NR account for ECS Cluster resources deployed for account ID ${obj.accountId}`
@@ -50,10 +52,19 @@ const queryForResourcesEcs = async (obj) => {
             }`,
       },
     });
-    const response = getResources.data;
+    const response = getResources.data.data.actor.entitySearch.entities;
     console.log(
       `The response returned from GQL was ${JSON.stringify(response)}`
     );
+    response.forEach((r) => {
+      if (r.accountId === obj.RESULT.NR_ACCOUNT_ID) {
+        console.log("Found the account ID. Grabbing Cluster...");
+
+        // Check if multiple clusters - still to do
+        CLUSTER_GUID = r.guid;
+        console.log(CLUSTER_GUID);
+      }
+    });
     return {
       statusCode: 200,
       body: JSON.stringify(response),
