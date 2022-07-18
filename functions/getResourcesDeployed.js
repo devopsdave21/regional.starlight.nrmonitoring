@@ -54,7 +54,7 @@ const queryForResourcesEcs = async (obj) => {
     });
     const response = getResources.data;
     console.log(
-      `The response returned from GQL was ${JSON.stringify(response)}`
+      `The response returned from GQL was ${response}}`
     );
     response.forEach((r) => {
       if (r.accountId === obj.RESULT.NR_ACCOUNT_ID) {
