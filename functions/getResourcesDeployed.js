@@ -52,7 +52,7 @@ const queryForResourcesEcs = async (obj) => {
             }`,
       },
     });
-    const response = getResources.data.actor;
+    const response = getResources.data;
     console.log(
       `The response returned from GQL was ${JSON.stringify(response)}`
     );
