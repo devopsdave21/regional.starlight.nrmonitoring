@@ -33,7 +33,7 @@ const getAlertPolicies = async (e) => {
       },
     });
     const response = data.data;
-    console.log(`The data returned from search is ${response}`);
+    console.log(`The data returned from search is ${JSON.stringify(response)}`);
     // Need to only return the name of the policy that matches the name of the policy being created at client
     return response;
   } catch (err) {
