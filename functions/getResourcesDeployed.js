@@ -11,7 +11,7 @@ TODO
 
 */
 
-const CLUSTER_GUID = "";
+var CLUSTER_GUID = "";
 
 const queryForResourcesEcs = async (obj) => {
   console.log(
