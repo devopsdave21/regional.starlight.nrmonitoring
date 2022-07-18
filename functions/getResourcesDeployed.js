@@ -57,7 +57,7 @@ const queryForResourcesEcs = async (obj) => {
       `The response returned from GQL was ${JSON.stringify(response)}}`
     );
     response.forEach((r) => {
-      if (r.accountId === obj.RESULT.NR_ACCOUNT_ID) {
+      if (r.accountId === obj.accountId) {
         console.log("Found the account ID. Grabbing Cluster...");
 
         // Check if multiple clusters - still to do
