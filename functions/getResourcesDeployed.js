@@ -98,5 +98,4 @@ exports.handler = async (event) => {
   });
   const sqsResult = await queryForResourcesSqs();
   const rdsResult = await queryForResourcesRds();
-  console.log(result);
 };
