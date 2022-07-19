@@ -41,7 +41,7 @@ const getAlertPolicies = async (e) => {
       data.data.data.actor.account.alerts.policiesSearch.policies;
     console.log(`The data returned from search is ${JSON.stringify(response)}`);
     response.forEach((r) => {
-      if (r.name === e.event.event.event.RESULT.TEAM_NAME) {
+      if (r.name === e.event.event.RESULT.TEAM_NAME) {
         console.log(
           "Already found 1 or more alert policies with same name. Not creating a new one"
         );
