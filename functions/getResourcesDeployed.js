@@ -93,8 +93,8 @@ exports.handler = async (event) => {
     JSON.stringify(event)
   );
   const resultEcs = await queryForResourcesEcs({
-    accountId: event.body.event.event.event.RESULT.NR_ACCOUNT_ID,
-    NrAPIKey: event.body.event.event.event.RESULT.API_KEY,
+    accountId: event.event.event.RESULT.NR_ACCOUNT_ID,
+    NrAPIKey: event.event.event.RESULT.API_KEY,
   });
   const sqsResult = await queryForResourcesSqs();
   const rdsResult = await queryForResourcesRds();
