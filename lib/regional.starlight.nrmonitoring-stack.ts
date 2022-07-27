@@ -229,8 +229,8 @@ export class RegionalStarlightNrmonitoringStack extends Stack {
           "Do the work in parallel if body contains abreviated AWS service"
         )
           .branch(createEcsAlertConditionsTask)
-          .branch(createSqsAlertConditionsTask)
-          .branch(createRdsAlertConditionsTask)
+          // .branch(createSqsAlertConditionsTask)
+          // .branch(createRdsAlertConditionsTask)
       );
 
     const stateMachine = new sfn.StateMachine(
