@@ -67,7 +67,7 @@ const queryForResourcesEcs = async (obj) => {
     });
     return {
       statusCode: 200,
-      body: JSON.stringify(response),
+      CLUSTER_GUID,
       headers: { "Content-Type": "text/plain " },
     };
   } catch (err) {
@@ -96,6 +96,7 @@ exports.handler = async (event) => {
     accountId: event.event.event.event.RESULT.NR_ACCOUNT_ID,
     NrAPIKey: event.event.event.event.RESULT.API_KEY,
   });
+  console.log(resultEcs);
   const sqsResult = await queryForResourcesSqs();
   const rdsResult = await queryForResourcesRds();
 };
