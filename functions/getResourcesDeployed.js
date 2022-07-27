@@ -97,6 +97,9 @@ exports.handler = async (event) => {
     NrAPIKey: event.event.event.event.RESULT.API_KEY,
   });
   console.log(resultEcs);
+  return {
+    resultEcs,
+  };
   const sqsResult = await queryForResourcesSqs();
   const rdsResult = await queryForResourcesRds();
 };
