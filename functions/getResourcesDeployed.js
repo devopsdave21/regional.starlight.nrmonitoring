@@ -90,11 +90,11 @@ const queryForResourcesRds = async (obj) => {
 exports.handler = async (event) => {
   console.log(
     "Querying New Relic for resources to get entity guids to use in mutations...",
-    JSON.stringify(event.event.event)
+    JSON.stringify(event.event.event.event.RESULT.NR_ACCOUNT_ID)
   );
   const resultEcs = await queryForResourcesEcs({
-    accountId: event.event.event.RESULT.NR_ACCOUNT_ID,
-    NrAPIKey: event.event.event.RESULT.API_KEY,
+    accountId: event.event.event.event.RESULT.NR_ACCOUNT_ID,
+    NrAPIKey: event.event.event.event.RESULT.API_KEY,
   });
   const sqsResult = await queryForResourcesSqs();
   const rdsResult = await queryForResourcesRds();
