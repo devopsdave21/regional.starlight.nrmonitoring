@@ -8,6 +8,7 @@ const {
 const NR_HOST = "https://api.newrelic.com/graphql";
 var NR_API_KEY = "";
 var hasAlertPolicy = false;
+var POLICY_ID = "";
 
 const getAlertPolicies = async (e) => {
   console.log(
@@ -29,6 +30,7 @@ const getAlertPolicies = async (e) => {
                 policiesSearch {
                   policies {
                     name
+                    id
                   }
                 }
               }
@@ -46,7 +48,7 @@ const getAlertPolicies = async (e) => {
           "Already found 1 or more alert policies with same name. Not creating a new one"
         );
         hasAlertPolicy = true;
-        return;
+        POLICY_ID = r.id;
       }
     });
     // Need to only return the name of the policy that matches the name of the policy being created at client
@@ -68,7 +70,7 @@ exports.handler = async (event) => {
   TODO - Need to put some logic in here to check if an alert policy has already been created
   with this name
   */
-  if ((hasAlertPolicy === false)) {
+  if (hasAlertPolicy === false) {
     try {
       const graphqlData = await axios({
         url: NR_HOST,
@@ -104,6 +106,8 @@ exports.handler = async (event) => {
     }
   } else {
     console.log("Alert policy already in place. Not creating a new one");
+    // Need to get the alert policy ID to always send to next function to create the alerts
+    console.log(`The already created alert policy is ${POLICY_ID}`);
   }
   return {
     statusCode: 200,
