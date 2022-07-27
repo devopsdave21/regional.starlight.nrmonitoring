@@ -95,11 +95,7 @@ exports.handler = async (event) => {
       };
       console.log("The body of the mutation is: ", JSON.stringify(body));
       return {
-        statusCode: 200,
-        body,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
+        policyId: body.graphqlData.data._a1.id,
       };
     } catch (err) {
       console.log("error posting to New Relic API ", err);
@@ -112,6 +108,7 @@ exports.handler = async (event) => {
   return {
     statusCode: 200,
     event,
+    policyId: POLICY_ID,
     headers: {
       "Access-Control-Allow-Origin": "*",
     },
