@@ -105,4 +105,11 @@ exports.handler = async (event) => {
   } else {
     console.log("Alert policy already in place. Not creating a new one");
   }
+  return {
+    statusCode: 200,
+    event,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+  };
 };
