@@ -69,6 +69,7 @@ const queryForResourcesEcs = async (obj) => {
       statusCode: 200,
       CLUSTER_GUID,
       ACCOUNT_ID: obj.accountId,
+      POLICY_ID: obj.policyId,
       headers: { "Content-Type": "text/plain " },
     };
   } catch (err) {
@@ -97,6 +98,7 @@ exports.handler = async (event) => {
   const resultEcs = await queryForResourcesEcs({
     accountId: event.event.event.event.RESULT.NR_ACCOUNT_ID,
     NrAPIKey: event.event.event.event.RESULT.API_KEY,
+    policyId: event.policyId,
   });
   console.log(resultEcs);
   return {
