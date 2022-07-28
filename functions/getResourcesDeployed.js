@@ -100,7 +100,7 @@ exports.handler = async (event) => {
     NrAPIKey: event.event.event.event.RESULT.API_KEY,
     policyId: event.policyId,
   });
-  console.log(resultEcs);
+  console.log('TEST TEST:', resultEcs);
   return {
     resultEcs,
   };
