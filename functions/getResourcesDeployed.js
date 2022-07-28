@@ -89,6 +89,7 @@ const queryForResourcesRds = async (obj) => {
 };
 
 exports.handler = async (event) => {
+  console.log(event);
   console.log(
     "Querying New Relic for resources to get entity guids to use in mutations...",
     JSON.stringify(event.event.event.event.RESULT.NR_ACCOUNT_ID)
