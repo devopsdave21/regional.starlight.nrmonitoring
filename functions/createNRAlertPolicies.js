@@ -72,7 +72,7 @@ exports.handler = async (event) => {
   TODO - Need to put some logic in here to check if an alert policy has already been created
   with this name
   */
-  if (hasAlertPolicy === false) {
+  if (HAS_ALERT_POLICY === false) {
     try {
       const graphqlData = await axios({
         url: NR_HOST,
