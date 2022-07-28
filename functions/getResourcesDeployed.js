@@ -68,6 +68,7 @@ const queryForResourcesEcs = async (obj) => {
     return {
       statusCode: 200,
       CLUSTER_GUID,
+      ACCOUNT_ID: obj.accountId,
       headers: { "Content-Type": "text/plain " },
     };
   } catch (err) {
