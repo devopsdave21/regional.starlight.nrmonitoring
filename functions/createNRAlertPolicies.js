@@ -7,7 +7,7 @@ const {
 
 const NR_HOST = "https://api.newrelic.com/graphql";
 var NR_API_KEY = "";
-var hasAlertPolicy = false;
+var HAS_ALERT_POLICY = false;
 var POLICY_ID = "";
 
 const getAlertPolicies = async (e) => {
@@ -43,11 +43,13 @@ const getAlertPolicies = async (e) => {
       data.data.data.actor.account.alerts.policiesSearch.policies;
     console.log(`The data returned from search is ${JSON.stringify(response)}`);
     response.forEach((r) => {
+      console.log(`The name of the policie(s) are ${r.name}`)
+      console.log(e.event.event.RESULT.TEAM_NAME)
       if (r.name === e.event.event.RESULT.TEAM_NAME) {
         console.log(
           "Already found 1 or more alert policies with same name. Not creating a new one"
         );
-        hasAlertPolicy = true;
+        HAS_ALERT_POLICY = true;
         POLICY_ID = r.id;
       }
     });
