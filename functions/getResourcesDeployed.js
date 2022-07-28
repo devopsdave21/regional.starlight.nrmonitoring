@@ -68,6 +68,7 @@ const queryForResourcesEcs = async (obj) => {
     return {
       statusCode: 200,
       CLUSTER_GUID,
+      NR_API_KEY: obj.NrAPIKey,
       ACCOUNT_ID: obj.accountId,
       POLICY_ID: obj.policyId,
       headers: { "Content-Type": "text/plain " },
